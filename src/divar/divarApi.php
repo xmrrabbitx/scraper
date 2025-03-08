@@ -67,6 +67,7 @@ class divarApi extends apiRequest
     public function parseExport()
     {
         var_dump("test is here!");
+
     }
 
     /**
