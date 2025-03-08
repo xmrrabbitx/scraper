@@ -1,0 +1,21 @@
+{
+    "name": "scraper/trader",
+    "autoload": {
+        "psr-4": {
+            "Scraper\\Trader\\": "src/"
+        },
+        "files": ["src/core/utilities.php"]
+    },
+    "authors": [
+        {
+            "name": "hadi",
+            "email": "hadi.mirzaie300@gmail.com"
+        }
+    ],
+    "require": {
+      "guzzlehttp/guzzle": "^7.9",
+      "ext-json": "*",
+      "phpoffice/phpspreadsheet": "^4.1",
+      "ext-intl": "*"
+    }
+}
