@@ -2,13 +2,19 @@
 
 namespace Scraper\Trader\divar;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Scraper\Trader\core\apiRequest;
+use Scraper\Trader\core\General;
+use function Scraper\Trader\core\utilities\gregorian_to_jalali;
 use function Scraper\Trader\core\utilities\random_user_agent;
+use function Scraper\Trader\core\utilities\currentDate;
 
 class divarApi extends apiRequest
 {
 
     const SEARCH_CATEGORIES = "https://api.divar.ir/v8/postlist/w/search";
+
+    const FILE_PATH = "./src/xls/%s";
 
     protected $defaultHeaders = [
         'Referer'=> 'https://divar.ir/',
@@ -55,18 +61,36 @@ class divarApi extends apiRequest
                 ]
             ]
         ];
-        $headers = [
 
-        ];
-        $rsp = $this->request('POST',self::SEARCH_CATEGORIES, $data, $headers);
-        $json = json_decode($rsp);
+        //$rsp = $this->request('POST',self::SEARCH_CATEGORIES, $data);
+        //$json = json_decode($rsp);
 
-        var_dump($json);
+        $this->parseExport("okkk");
     }
 
-    public function parseExport()
+    /**
+     * @param $json
+     * @return void
+     */
+    protected function parseExport($json)
     {
-        var_dump("test is here!");
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Hello');
+        $sheet->setCellValue('B1', 'World!');
+        $sheet->setCellValue('A2', 'This is');
+        $sheet->setCellValue('B2', 'PhpSpreadsheet.');
+
+        $date = explode("/",currentDate());
+        $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
+        $filePath = $dateShamsi[0]."/".$dateShamsi[1]."/";
+
+        $filePath = sprintf(self::FILE_PATH, $filePath);
+
+        $fileName = $dateShamsi[2] . ".xls";
+
+        General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
 
     }
 

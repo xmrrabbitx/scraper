@@ -5,6 +5,7 @@ namespace Scraper\Trader\core;
 use DateTime;
 use IntlDateFormatter;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class General {
     /**
@@ -21,6 +22,26 @@ class General {
         // Get the first worksheet
         $worksheet = $spreadsheet->getActiveSheet();
         return $worksheet->toArray();
+    }
+
+    /**
+     * write ads into Xls file format
+     * @param string $filePath eg: ./src
+     * @param string $fileName eg: example.xls
+     * @param string $fileType eg: Xls
+     */
+    public static function writeSheet($filePath, $fileName, $fileType, $spreadsheet)
+    {
+
+        // create directory and subdirectory if not existed!
+        if (!is_dir($filePath)) {
+            mkdir($filePath, 0755, true);
+        }
+
+        $writer = IOFactory::createWriter($spreadsheet, $fileType);
+
+        $writer->save($filePath . $fileName);
+
     }
 
     /**

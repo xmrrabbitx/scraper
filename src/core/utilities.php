@@ -350,6 +350,14 @@ function parse_user_agent(string $userAgent): array {
     ];
 }
 
+/**
+ * return current date in gregory format
+ * @return mixed
+ */
+function currentDate()
+{
+    return date('Y/m/d');
+}
 
 /**
  * @param string $date

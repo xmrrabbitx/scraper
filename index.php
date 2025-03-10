@@ -6,4 +6,3 @@ use Scraper\Trader\divar\divarApi;
 
 $divar= new divarApi();
 $divar->cloth();
-

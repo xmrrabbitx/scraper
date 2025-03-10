@@ -16,6 +16,6 @@
       "guzzlehttp/guzzle": "^7.9",
       "ext-json": "*",
       "phpoffice/phpspreadsheet": "^4.1",
-      "ext-intl": "*"
+      "ext-intl": "*",
     }
 }
