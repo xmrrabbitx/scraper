@@ -16,6 +16,11 @@ class divarApi extends apiRequest
 
     const FILE_PATH = "./src/xls/%s";
 
+    const CITY_CODES = [
+
+        "tehran"=>"1",
+    ];
+
     protected $defaultHeaders = [
         'Referer'=> 'https://divar.ir/',
         'X-Render-Type'=> 'CSR',
@@ -31,57 +36,76 @@ class divarApi extends apiRequest
         parent::__construct();
         $this->defaultHeaders['User-Agent'] = random_user_agent();
     }
-    public function cloth():void
+
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @return void
+     */
+    public function cloth(string $cityName=null, int $layerPage=0):void
     {
-        $data = [
-            "city_ids"=>["1"],
-            "source_view"=>"CATEGORY",
-            "disable_recommendation"=>false,
-            "search_data"=>[
-                "form_data"=>[
-                    "data"=>[
-                        "category"=>[
-                            "str"=>[
-                                "value"=>"clothing"
+        try {
+                $data = [
+                    "city_ids"=>[$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view"=>"CATEGORY",
+                    "disable_recommendation"=>false,
+                    "search_data"=>[
+                        "form_data"=>[
+                            "data"=>[
+                                "category"=>[
+                                    "str"=>[
+                                        "value"=>"clothing"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data"=>[
+                        "@type"=>"type.googleapis.com/post_list.PaginationData",
+                        "layer_page"=>$layerPage, // older ads
+                        "page"=>$layerPage // older ads
+                    ],
+                    "server_payload"=>[
+                        "@type"=>"type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data"=>[
+                            "data"=>[
+                                "sort"=>[
+                                    "str"=>[
+                                        "value"=>"sort_date"
+                                    ]
+                                ]
                             ]
                         ]
                     ]
-                ]
-            ],
-            "server_payload"=>[
-                "@type"=>"type.googleapis.com/widgets.SearchData.ServerPayload",
-                "additional_form_data"=>[
-                    "data"=>[
-                        "sort"=>[
-                            "str"=>[
-                                "value"=>"sort_date"
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
+                ];
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($rsp);
 
-        //$rsp = $this->request('POST',self::SEARCH_CATEGORIES, $data);
-        //$json = json_decode($rsp);
+                sleep(5);
+                $layerPage++;
 
-        $this->parseExport("okkk");
+                // next layer date ads
+                if($status){
+                    //$this->cloth($cityName, $layerPage);
+                }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+
     }
 
     /**
-     * @param $json
+     * @param $rsp
      * @return void
      */
-    protected function parseExport($json)
+    protected function parseExport($rsp):bool
     {
+        // create an instance of Spreadsheet()
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'Hello');
-        $sheet->setCellValue('B1', 'World!');
-        $sheet->setCellValue('A2', 'This is');
-        $sheet->setCellValue('B2', 'PhpSpreadsheet.');
-
+        // set current date for file name
         $date = explode("/",currentDate());
         $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
         $filePath = $dateShamsi[0]."/".$dateShamsi[1]."/";
@@ -90,8 +114,64 @@ class divarApi extends apiRequest
 
         $fileName = $dateShamsi[2] . ".xls";
 
-        General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
+        // loop the ads data
+        $json = json_decode($rsp);
+        $data = $json->list_widgets;
+        foreach ($data as $adsList){
 
+            if($adsList->widget_type === "POST_ROW") {
+
+                if (isset($adsList->data->red_text)) {
+                    $type = "shop";
+                } else {
+                    $type = "people";
+                }
+
+                $date = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
+                $date = explode("-", $date);
+                $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+                $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+
+                $price = $adsList->data->middle_description_text;
+                $unicode = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+                $english = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+                $price = str_replace($unicode, $english, trim($price));
+                $price = preg_replace('/[^0-9]/', '', $price);
+
+                $info = [
+                    "title" => $adsList->data->action->payload->web_info->title,
+                    "city" => $adsList->data->action->payload->web_info->city_persian,
+                    "district" => $adsList->data->action->payload->web_info->district_persian,
+                    "date" => $dateShamsi,
+                    "price" => $price,
+                    "type" => $type
+                ];
+
+
+                // insert into the file
+                if (!is_dir($filePath . $fileName)) {
+
+                    // set columns names
+                    $sheet->setCellValue("A1", "title");
+                    $sheet->setCellValue("B1", "city");
+                    $sheet->setCellValue("C1", "district");
+                    $sheet->setCellValue("D1", "date");
+                    $sheet->setCellValue("E1", "price");
+                    $sheet->setCellValue("F1", "type");
+                } else {
+                    // update the file
+                    $activeSheet = General::getSheetArray($filePath . $fileName, "Xls") ?? null;
+                    // insert new data into rows
+
+
+                }
+                General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
+            }
+        }
+
+var_dump("end!");
+        $status = true;
+        return $status ?? false;
     }
 
     /**

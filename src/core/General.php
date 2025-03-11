@@ -14,7 +14,7 @@ class General {
      * @return array
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public static function getSheetArray($filePath, $fileType)
+    public static function getSheetArray($filePath, $fileType):array
     {
         $reader = IOFactory::createReader($fileType);
         $spreadsheet = $reader->load($filePath);
