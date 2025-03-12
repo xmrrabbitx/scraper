@@ -11,6 +11,7 @@ use function Scraper\Trader\core\utilities\currentDate;
 
 class divarApi extends apiRequest
 {
+    protected array $session;
 
     const SEARCH_CATEGORIES = "https://api.divar.ir/v8/postlist/w/search";
 
@@ -45,7 +46,14 @@ class divarApi extends apiRequest
     public function cloth(string $cityName=null, int $layerPage=0):void
     {
         try {
-                $data = [
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $data = [
                     "city_ids"=>[$cityName ?? self::CITY_CODES['tehran']],
                     "source_view"=>"CATEGORY",
                     "disable_recommendation"=>false,
@@ -78,6 +86,7 @@ class divarApi extends apiRequest
                         ]
                     ]
                 ];
+
                 $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
                 $status = $this->parseExport($rsp);
 
@@ -86,7 +95,7 @@ class divarApi extends apiRequest
 
                 // next layer date ads
                 if($status){
-                    //$this->cloth($cityName, $layerPage);
+                    $this->cloth($cityName, $layerPage);
                 }
 
         }catch (\Exception $error){
@@ -101,9 +110,6 @@ class divarApi extends apiRequest
      */
     protected function parseExport($rsp):bool
     {
-        // create an instance of Spreadsheet()
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
 
         // set current date for file name
         $date = explode("/",currentDate());
@@ -138,7 +144,7 @@ class divarApi extends apiRequest
                 $price = str_replace($unicode, $english, trim($price));
                 $price = preg_replace('/[^0-9]/', '', $price);
 
-                $info = [
+                $info[] = [
                     "title" => $adsList->data->action->payload->web_info->title,
                     "city" => $adsList->data->action->payload->web_info->city_persian,
                     "district" => $adsList->data->action->payload->web_info->district_persian,
@@ -147,31 +153,54 @@ class divarApi extends apiRequest
                     "type" => $type
                 ];
 
+                var_dump($info);
 
-                // insert into the file
-                if (!is_dir($filePath . $fileName)) {
-
-                    // set columns names
-                    $sheet->setCellValue("A1", "title");
-                    $sheet->setCellValue("B1", "city");
-                    $sheet->setCellValue("C1", "district");
-                    $sheet->setCellValue("D1", "date");
-                    $sheet->setCellValue("E1", "price");
-                    $sheet->setCellValue("F1", "type");
-                } else {
-                    // update the file
-                    $activeSheet = General::getSheetArray($filePath . $fileName, "Xls") ?? null;
-                    // insert new data into rows
-
-
-                }
-                General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
             }
         }
 
-var_dump("end!");
-        $status = true;
-        return $status ?? false;
+        // insert into the file
+        if (!is_file($filePath . $fileName)) {
+
+            // create an instance of Spreadsheet()
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // set columns names
+            $sheet->setCellValue("A1", "title");
+            $sheet->setCellValue("B1", "city");
+            $sheet->setCellValue("C1", "district");
+            $sheet->setCellValue("D1", "date");
+            $sheet->setCellValue("E1", "price");
+            $sheet->setCellValue("F1", "type");
+            General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
+
+        } else {
+            // update the file
+            $spreadSheet = General::getSheet($filePath . $fileName, "Xls") ?? null;
+            $activeSheet = $spreadSheet->getActiveSheet();
+
+            foreach ($info as $adsInfo) {
+                $lastRow = $activeSheet->getHighestRow();
+
+                $activeSheet->setCellValue("A" . $lastRow + 1, $adsInfo['title']);
+                $activeSheet->setCellValue("B" . $lastRow + 1, $adsInfo['city']);
+                $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['district']);
+                $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['date']);
+                $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['price']);
+                $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['type']);
+
+            }
+            General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
+        }
+
+        // check if day is ended
+        $endDate = end($info)['date'];
+        if($endDate !== $dateShamsi){
+            $status = false;
+        }else{
+            $status = true;
+        }
+        return $status;
     }
 
     /**

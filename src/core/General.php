@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class General {
+
     /**
      * @param $filePath
      * @param $fileType
@@ -22,6 +23,18 @@ class General {
         // Get the first worksheet
         $worksheet = $spreadsheet->getActiveSheet();
         return $worksheet->toArray();
+    }
+
+    /**
+     * @param $filePath
+     * @param $fileType
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
+    public static function getSheet($filePath, $fileType)
+    {
+        $reader = IOFactory::createReader($fileType);
+        return $reader->load($filePath);
+
     }
 
     /**
