@@ -150,11 +150,9 @@ class divarApi extends apiRequest
                     "district" => $adsList->data->action->payload->web_info->district_persian,
                     "date" => $dateShamsi,
                     "price" => $price,
-                    "type" => $type
+                    "type" => $type,
+                    'token'=>$adsList->data->action->payload->token
                 ];
-
-                var_dump($info);
-
             }
         }
 
@@ -165,13 +163,16 @@ class divarApi extends apiRequest
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
 
-            // set columns names
+            // set columns titles
             $sheet->setCellValue("A1", "title");
             $sheet->setCellValue("B1", "city");
             $sheet->setCellValue("C1", "district");
             $sheet->setCellValue("D1", "date");
             $sheet->setCellValue("E1", "price");
             $sheet->setCellValue("F1", "type");
+            $sheet->setCellValue("G1", "token");
+
+            // store into Excel
             General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
 
         } else {
@@ -188,16 +189,20 @@ class divarApi extends apiRequest
                 $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['date']);
                 $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['price']);
                 $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['type']);
+                $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['token']);
 
             }
+            // store into Excel
             General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
         }
 
         // check if day is ended
         $endDate = end($info)['date'];
         if($endDate !== $dateShamsi){
+            var_dump("end!");
             $status = false;
         }else{
+            var_dump("next!");
             $status = true;
         }
         return $status;
