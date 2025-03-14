@@ -161,7 +161,6 @@ class divarApi extends apiRequest
             }
         }
 
-
         // insert into the file
         if (!is_file($filePath . $fileName)) {
 
@@ -181,7 +180,7 @@ class divarApi extends apiRequest
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
 
-            }
+        }
         else {
                 // update the file
                 $spreadSheet = General::getSheet($filePath . $fileName, "Xls") ?? null;
@@ -201,7 +200,7 @@ class divarApi extends apiRequest
                 }
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
-            }
+        }
 
         // check if day is ended
         $date = explode("/",currentDate());
