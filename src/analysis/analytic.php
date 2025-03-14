@@ -6,11 +6,11 @@ use Scraper\Trader\core\General;
 
 /**
  * analysis the categories
+ * descriptions are 2nd column in Xls file
  * prices are 4th column in Xls file
  */
 class analytic
 {
-
     protected array $activeSheet;
 
     /**
@@ -34,7 +34,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[4];
+            $listPrices[] = $prices[5];
         }
 
        return (int)max($listPrices);
@@ -51,7 +51,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[4];
+            $listPrices[] = $prices[5];
         }
 
         return (int)min($listPrices);
@@ -68,7 +68,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[4];
+            $listPrices[] = $prices[5];
         }
 
         return (int)array_sum($listPrices);
@@ -85,7 +85,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[4];
+            $listPrices[] = $prices[5];
         }
 
         return (int)(array_sum($listPrices)/count($listPrices));
@@ -102,7 +102,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[4];
+            $listPrices[] = $prices[5];
         }
         sort($listPrices);
         $length = count($listPrices);
@@ -112,8 +112,26 @@ class analytic
         } else {
             $low = $listPrices[$middle_index];
             $high = $listPrices[$middle_index + 1];
+            var_dump($high);
+            var_dump($low);
             return ($low + $high) / 2;
         }
     }
 
+    /**
+     * return frequency type product
+     * @param string $type
+     * @return float percentage of frequency each type
+     */
+    public function frequencyType(string $type):float
+    {
+        $listTypes = [];
+        foreach ($this->activeSheet as $info){
+            $description = $info[1];
+            if(preg_match("/.$type./", $description)){
+                $listTypes[] = $description;
+            }
+        }
+        return number_format((float)((count($listTypes) * 100) / count($this->activeSheet)), 5);
+    }
 }
