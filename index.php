@@ -5,7 +5,6 @@ include "./vendor/autoload.php";
 use Scraper\Trader\analysis\analytic;
 use Scraper\Trader\divar\divarApi;
 
-
 //$divar= new divarApi();
 //$divar->cloth();
 
@@ -18,5 +17,5 @@ $sum = $analytitc->sum();
 var_dump($sum);
 $average = $analytitc->average();
 var_dump($average);
-$averagePrice = $analytitc->averagePrice();
+$averagePrice = $analytitc->median();
 var_dump($averagePrice);

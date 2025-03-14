@@ -92,10 +92,10 @@ class analytic
     }
 
     /**
-     * calculate average between max and min prices in each category
+     * calculate median between max and min prices in each category
      * @return int
      */
-    public function averagePrice():int
+    public function median():int
     {
         $listPrices = [];
         foreach ($this->activeSheet as $index=>$prices){
@@ -104,8 +104,16 @@ class analytic
             }
             $listPrices[] = $prices[4];
         }
-
-        return (int)((max($listPrices)-min($listPrices)) / 2);
+        sort($listPrices);
+        $length = count($listPrices);
+        $middle_index = floor(($length - 1) / 2);
+        if ($length % 2) {
+            return $listPrices[$middle_index];
+        } else {
+            $low = $listPrices[$middle_index];
+            $high = $listPrices[$middle_index + 1];
+            return ($low + $high) / 2;
+        }
     }
 
 }
