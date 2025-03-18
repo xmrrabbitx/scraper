@@ -11,15 +11,15 @@ use Scraper\Trader\core\General;
  */
 class analytic
 {
-    protected array $activeSheet;
+    protected array|null $activeSheet;
 
     /**
      * @param string $filePath
      */
-    public function __construct($filePath)
+    public function __construct(string $filePath)
     {
 
-        $this->activeSheet = General::getSheetArray($filePath, "Xls") ?? null;
+        $this->activeSheet = General::getSheetArray($filePath, "Xls");
 
     }
 
@@ -112,8 +112,6 @@ class analytic
         } else {
             $low = $listPrices[$middle_index];
             $high = $listPrices[$middle_index + 1];
-            var_dump($high);
-            var_dump($low);
             return ($low + $high) / 2;
         }
     }
@@ -121,17 +119,30 @@ class analytic
     /**
      * return frequency type product
      * @param string $type
-     * @return float percentage of frequency each type
+     * @return array sum of frequency each type
      */
-    public function frequencyType(string $type):float
+    public function fT(string $type):array
     {
         $listTypes = [];
         foreach ($this->activeSheet as $info){
             $description = $info[1];
-            if(preg_match("/.$type./", $description)){
+            if(preg_match("/$type/", $description)){
                 $listTypes[] = $description;
             }
         }
-        return number_format((float)((count($listTypes) * 100) / count($this->activeSheet)), 5);
+        return [
+            "sumTypes"=>count($listTypes) ,
+            "sumProducts"=>count($this->activeSheet)
+        ];
+    }
+
+    /**
+     * return frequency type percentage
+     * @param array $listTypes
+     * @return float percentage of frequency each type
+     */
+    public function fTP(int $sumTypes, int $sumProducts):float
+    {
+        return number_format((float)(($sumTypes * 100) / $sumProducts), 5);
     }
 }

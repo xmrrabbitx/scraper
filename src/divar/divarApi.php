@@ -148,16 +148,23 @@ class divarApi extends apiRequest
 
                 if($price !== str_repeat('1', strlen($price)) && $price < $filterPrice) {
 
-                    $info[] = [
-                        "title" => $adsList->data->action->payload->web_info->title,
-                        "description"=> $adsList->data->action->payload->web_info->title,
-                        "city" => $adsList->data->action->payload->web_info->city_persian,
-                        "district" => $adsList->data->action->payload->web_info->district_persian,
-                        "date" => $dateShamsi,
-                        "price" => $price,
-                        "ads_owner" => $ads_owner,
-                        'token' => $adsList->data->action->payload->token
-                    ];
+                    // check if day is ended
+                    $cdate = explode("/",currentDate());
+                    $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
+                    $currentDateShamsi = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
+
+                    if($dateShamsi === $currentDateShamsi) {
+                        $info[] = [
+                            "title" => $adsList->data->action->payload->web_info->title,
+                            "description" => $adsList->data->action->payload->web_info->title,
+                            "city" => $adsList->data->action->payload->web_info->city_persian,
+                            "district" => $adsList->data->action->payload->web_info->district_persian,
+                            "date" => $dateShamsi,
+                            "price" => $price,
+                            "ads_owner" => $ads_owner,
+                            'token' => $adsList->data->action->payload->token
+                        ];
+                    }
                 }
             }
         }
@@ -205,12 +212,7 @@ class divarApi extends apiRequest
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
         }
 
-        // check if day is ended
-        $date = explode("/",currentDate());
-        $currentDate = gregorian_to_jalali($date[0],$date[1], $date[2]);
-        $currentDateShamsi = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
-        $endDate = end($info)['date'];
-        if($endDate !== $currentDateShamsi){
+        if(empty($info)){
             var_dump("end!");
             $status = false; // end process
         }

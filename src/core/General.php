@@ -12,11 +12,15 @@ class General {
     /**
      * @param $filePath
      * @param $fileType
-     * @return array
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @return array|null
      */
-    public static function getSheetArray($filePath, $fileType):array
+    public static function getSheetArray($filePath, $fileType): ?array
     {
+        // check if file existed!
+        if (!is_file($filePath)) {
+           return null;
+        }
+
         $reader = IOFactory::createReader($fileType);
         $spreadsheet = $reader->load($filePath);
 
