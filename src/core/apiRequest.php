@@ -16,7 +16,7 @@ abstract class apiRequest
     {
         $this->httpClient = new HttpClient([
             'base_uri'=> '',
-            'http_errors' => true,
+            'http_errors' => false,
             'timeout' => 10,
             'proxy'=>'http://127.0.0.1:8080',
             'verify'=> false,

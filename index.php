@@ -5,9 +5,14 @@ include "./vendor/autoload.php";
 use Scraper\Trader\analysis\analytic;
 use Scraper\Trader\divar\divarApi;
 
-//$divar= new divarApi();
+$divar= new divarApi();
 //$divar->cloth();
+//$divar->shoesBeltBag();
+$divar->accessories();
 
+
+
+/*
 $sumProducts = 0;
 $sumProducts2 = 0;
 $sumTypes = 0;
@@ -30,6 +35,6 @@ for ($i=0;$i<=30;$i++) {
         var_dump($result);
     }
 }
-
+*/
 
 
