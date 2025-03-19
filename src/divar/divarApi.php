@@ -17,6 +17,8 @@ class divarApi extends apiRequest
 
     const FILE_PATH = "./src/xls/%s";
 
+    const SCRIPT_NAME = "Divar/";
+
     const CITY_CODES = [
 
         "tehran"=>"1",
@@ -89,7 +91,7 @@ class divarApi extends apiRequest
                 ];
 
                 $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
-                $status = $this->parseExport($filterPrice, $rsp);
+                $status = $this->parseExport($filterPrice, "cloth/",  $rsp);
 
                 sleep(5);
                 $layerPage++;
@@ -156,7 +158,7 @@ class divarApi extends apiRequest
             ];
 
             $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
-            $status = $this->parseExport($filterPrice, $rsp);
+            $status = $this->parseExport($filterPrice, "shoesBeltBag/", $rsp);
 
             sleep(5);
             $layerPage++;
@@ -223,7 +225,7 @@ class divarApi extends apiRequest
             ];
 
             $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
-            $status = $this->parseExport($filterPrice, $rsp);
+            $status = $this->parseExport($filterPrice, "accessories/", $rsp);
 
             sleep(5);
             $layerPage++;
@@ -239,17 +241,300 @@ class divarApi extends apiRequest
     }
 
     /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function healthBeauty(string $cityName=null, int $layerPage=0, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $data = [
+                "city_ids"=>[$cityName ?? self::CITY_CODES['tehran']],
+                "source_view"=>"CATEGORY",
+                "disable_recommendation"=>false,
+                "search_data"=>[
+                    "form_data"=>[
+                        "data"=>[
+                            "category"=>[
+                                "str"=>[
+                                    "value"=>"health-beauty"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "pagination_data"=>[
+                    "@type"=>"type.googleapis.com/post_list.PaginationData",
+                    "layer_page"=>$layerPage, // older ads
+                    "page"=>$layerPage // older ads
+                ],
+                "server_payload"=>[
+                    "@type"=>"type.googleapis.com/widgets.SearchData.ServerPayload",
+                    "additional_form_data"=>[
+                        "data"=>[
+                            "sort"=>[
+                                "str"=>[
+                                    "value"=>"sort_date"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+            $status = $this->parseExport($filterPrice, "healthBeauty/", $rsp);
+
+            sleep(5);
+            $layerPage++;
+
+            // next layer date ads
+            if($status){
+                $this->healthBeauty($cityName, $layerPage);
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function stationery(string $cityName=null, int $layerPage=0, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $data = [
+                "city_ids"=>[$cityName ?? self::CITY_CODES['tehran']],
+                "source_view"=>"CATEGORY",
+                "disable_recommendation"=>false,
+                "search_data"=>[
+                    "form_data"=>[
+                        "data"=>[
+                            "category"=>[
+                                "str"=>[
+                                    "value"=>"stationery"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "pagination_data"=>[
+                    "@type"=>"type.googleapis.com/post_list.PaginationData",
+                    "layer_page"=>$layerPage, // older ads
+                    "page"=>$layerPage // older ads
+                ],
+                "server_payload"=>[
+                    "@type"=>"type.googleapis.com/widgets.SearchData.ServerPayload",
+                    "additional_form_data"=>[
+                        "data"=>[
+                            "sort"=>[
+                                "str"=>[
+                                    "value"=>"sort_date"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+            $status = $this->parseExport($filterPrice, "stationery/", $rsp);
+
+            sleep(5);
+            $layerPage++;
+
+            // next layer date ads
+            if($status){
+                $this->stationery($cityName, $layerPage);
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+
+    /**
+     * @param string|null $queryType e.g: "major"
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function childrensClothingShoe(string $queryType = null, string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "childrens-clothing-and-shoe";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type, $layerPage, $filterPrice, $filterDate);
+            }else {
+                // query the simple category
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "childrensClothingShoe/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->childrensClothingShoe(null, $cityName,  $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+
+    /**
+     * return major products query
+     * @param string|null $cityName
+     * @param string $type
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function majorQuery(string $cityName=null, string $type, int $layerPage=0, int $filterPrice=10000000, $filterDate=null):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $data = [
+                "city_ids"=>[$cityName ?? self::CITY_CODES['tehran']],
+                "source_view"=>"SEARCH",
+                "disable_recommendation"=>false,
+                "search_data"=>[
+                    "form_data"=>[
+                        "data"=>[
+                            "category"=>[
+                                "str"=>[
+                                    "value"=> $type
+                                ]
+                            ]
+                        ]
+                    ],
+                    'query'=>'عمده'
+                ],
+                "pagination_data"=>[
+                    "@type"=>"type.googleapis.com/post_list.PaginationData",
+                    "layer_page"=>$layerPage, // older ads
+                    "page"=>$layerPage // older ads
+                ],
+                "server_payload"=>[
+                    "@type"=>"type.googleapis.com/widgets.SearchData.ServerPayload",
+                    "additional_form_data"=>[
+                        "data"=>[
+                            "sort"=>[
+                                "str"=>[
+                                    "value"=>"sort_date"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+            $status = $this->parseExportMajor($filterPrice, "childrensClothingShoe/major/", $rsp, $filterDate);
+
+            sleep(5);
+            $layerPage++;
+
+            // next layer date ads
+            if($status){
+                $this->majorQuery($cityName, $type, $layerPage, $filterPrice, $filterDate);
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+    /**
      * @param $rsp
      * @return void
      */
-    protected function parseExport($filterPrice, $rsp):bool
+    protected function parseExport($filterPrice, $categoryName,  $rsp, $filterDate=null):bool
     {
+
+        // check if day is ended
+        $cdate = explode("/",currentDate());
+        $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
+        $currentDate = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
+
         // set current date for file name
         $date = explode("/",currentDate());
         $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
         $filePath = $dateShamsi[0]."/".$dateShamsi[1]."/";
 
-        $filePath = sprintf(self::FILE_PATH, $filePath);
+        $filePath = sprintf(self::FILE_PATH, self::SCRIPT_NAME . $categoryName . $filePath);
 
         $fileName = $dateShamsi[2] . ".xls";
 
@@ -280,12 +565,8 @@ class divarApi extends apiRequest
 
                 if($price !== str_repeat('1', strlen($price)) && $price < $filterPrice) {
 
-                    // check if day is ended
-                    $cdate = explode("/",currentDate());
-                    $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
-                    $currentDateShamsi = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
+                    if($dateShamsi === $currentDate) {
 
-                    if($dateShamsi === $currentDateShamsi) {
                         $info[] = [
                             "title" => $adsList->data->action->payload->web_info->title,
                             "description" => $adsList->data->action->payload->web_info->title,
@@ -344,17 +625,134 @@ class divarApi extends apiRequest
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
         }
 
-        if(empty($info)){
+        //var_dump($info);
+        if (empty($info)) {
+                var_dump("end!");
+                $status = false; // end process
+        }
+        else {
+                var_dump("next!");
+                $status = true; // next process
+        }
+
+        return $status;
+    }
+
+    /**
+     * @param $rsp
+     * @return void
+     */
+    protected function parseExportMajor($filterPrice, $categoryName,  $rsp, $filterDate=null):bool
+    {
+
+        // set current date for file name
+        $date = explode("/",currentDate());
+        $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
+        $filePath = $dateShamsi[0]."/".$dateShamsi[1]."/";
+
+        $filePath = sprintf(self::FILE_PATH, self::SCRIPT_NAME . $categoryName . $filePath);
+
+        $fileName = $dateShamsi[2] . ".xls";
+
+        $json = json_decode($rsp);
+        $data = $json->list_widgets;
+        $info = [];
+        // loop the ads data
+        foreach ($data as $adsList){
+
+            if($adsList->widget_type === "POST_ROW") {
+
+                if (isset($adsList->data->red_text)) {
+                    $ads_owner = "shop";
+                } else {
+                    $ads_owner = "people";
+                }
+
+                $date = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
+                $date = explode("-", $date);
+                $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+                $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+
+                $price = $adsList->data->middle_description_text;
+                $unicode = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+                $english = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+                $price = str_replace($unicode, $english, trim($price));
+                $price = preg_replace('/[^0-9]/', '', $price);
+
+                if($price !== str_repeat('1', strlen($price)) && $price < $filterPrice) {
+                    if($dateShamsi >= $filterDate) {
+
+                        $info[] = [
+                            "title" => $adsList->data->action->payload->web_info->title,
+                            "description" => $adsList->data->action->payload->web_info->title,
+                            "city" => $adsList->data->action->payload->web_info->city_persian,
+                            "district" => $adsList->data->action->payload->web_info->district_persian,
+                            "date" => $dateShamsi,
+                            "price" => $price,
+                            "ads_owner" => $ads_owner,
+                            'token' => $adsList->data->action->payload->token
+                        ];
+                    }
+                }
+            }
+        }
+
+        // insert into the file
+        if (!is_file($filePath . $fileName)) {
+
+            // create an instance of Spreadsheet()
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // set columns titles
+            $sheet->setCellValue("A1", "title");
+            $sheet->setCellValue("B1", "description");
+            $sheet->setCellValue("C1", "city");
+            $sheet->setCellValue("D1", "district");
+            $sheet->setCellValue("E1", "date");
+            $sheet->setCellValue("F1", "price");
+            $sheet->setCellValue("G1", "ads_owner");
+            $sheet->setCellValue("H1", "token");
+
+            // store into Excel
+            General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
+
+        }
+        else {
+            // update the file
+            $spreadSheet = General::getSheet($filePath . $fileName, "Xls") ?? null;
+            $activeSheet = $spreadSheet->getActiveSheet();
+
+            foreach ($info as $adsInfo) {
+                $lastRow = $activeSheet->getHighestRow();
+
+                $activeSheet->setCellValue("A" . $lastRow + 1, $adsInfo['title']);
+                $activeSheet->setCellValue("B" . $lastRow + 1, $adsInfo['description']);
+                $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['city']);
+                $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['district']);
+                $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['date']);
+                $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['price']);
+                $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['ads_owner']);
+                $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['token']);
+
+            }
+            // store into Excel
+            General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
+        }
+
+        //var_dump($info);
+        if (empty($info)) {
             var_dump("end!");
             $status = false; // end process
         }
-        else{
+        else {
             var_dump("next!");
             $status = true; // next process
         }
 
         return $status;
     }
+
 
     /**
      * @param $body
