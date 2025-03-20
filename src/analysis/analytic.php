@@ -3,6 +3,7 @@
 namespace Scraper\Trader\analysis;
 
 use Scraper\Trader\core\General;
+use Scraper\Trader\divar\divarApi;
 
 /**
  * analysis the categories
@@ -98,7 +99,7 @@ class analytic
     public function median():int
     {
         $listPrices = [];
-        foreach ($this->activeSheet as $index=>$prices){
+        foreach ($this->activeSheet as $index => $prices){
             if ($index === 0) {
                 continue;
             }
@@ -117,6 +118,25 @@ class analytic
     }
 
     /**
+     * calculate median between max and min prices in each category
+     * @return int
+     */
+    public function medianType(array $listPrices):int
+    {
+        sort($listPrices);
+        $length = count($listPrices);
+        $middle_index = floor(($length - 1) / 2);
+        if ($length % 2) {
+            return $listPrices[$middle_index];
+        } else {
+            $low = $listPrices[$middle_index];
+            $high = $listPrices[$middle_index + 1];
+            return ($low + $high) / 2;
+        }
+    }
+
+
+    /**
      * return frequency type product
      * @param string $type
      * @return array sum of frequency each type
@@ -124,15 +144,18 @@ class analytic
     public function fT(string $type):array
     {
         $listTypes = [];
+        $listPrices = [];
         foreach ($this->activeSheet as $info){
             $description = $info[1];
             if(preg_match("/$type/", $description)){
                 $listTypes[] = $description;
+                $listPrices[] = $info[5];
             }
         }
         return [
             "sumTypes"=>count($listTypes) ,
-            "sumProducts"=>count($this->activeSheet)
+            "sumProducts"=>count($this->activeSheet),
+            "listPrices" => $listPrices
         ];
     }
 
