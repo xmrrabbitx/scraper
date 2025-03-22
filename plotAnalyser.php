@@ -13,7 +13,7 @@ class plotAnalyser
         $this->plot = new Scatterplot();
 
     }
-    public function chart()
+    public function medianScatter()
     {
         $layers = [
             [
@@ -29,4 +29,4 @@ class plotAnalyser
 }
 
 $plot = new plotAnalyser();
-$plot->chart();
+$plot->medianScatter();
