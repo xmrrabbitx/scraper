@@ -8,12 +8,20 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '1a61293ffb35bbf5a859aee8b172fd23' => __DIR__ . '/..' . '/sqonk/phext-core/src/global_functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '7de56c435892f5b402ee752aaef5fa35' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/BulkPlot.class.php',
+        'bfea83a16a06a45b71e5b526f6fa9092' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/JPGraphUtils.php',
+        'c90bb4538c4295502438f51bd429232b' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/Region.class.php',
         '742beb564496f2fca98d9aa448d75502' => __DIR__ . '/../..' . '/src/core/utilities.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'sqonk\\phext\\core\\' => 17,
+        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -32,6 +40,15 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         'M' => 
         array (
             'Matrix\\' => 7,
+            'Macocci7\\PhpScatterplot\\' => 24,
+            'Macocci7\\PhpFrequencyTable\\' => 27,
+            'Macocci7\\PhpCsv\\' => 16,
+            'Macocci7\\PhpCombination\\' => 24,
+        ),
+        'I' => 
+        array (
+            'Intervention\\Image\\' => 19,
+            'Intervention\\Gif\\' => 17,
         ),
         'G' => 
         array (
@@ -47,6 +64,10 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
     );
 
     public static $prefixDirsPsr4 = array (
+        'sqonk\\phext\\core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sqonk/phext-core/src',
+        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
@@ -76,6 +97,30 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Macocci7\\PhpScatterplot\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/macocci7/php-scatterplot/src',
+        ),
+        'Macocci7\\PhpFrequencyTable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/macocci7/php-frequency-table/src',
+        ),
+        'Macocci7\\PhpCsv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/macocci7/php-csv/src',
+        ),
+        'Macocci7\\PhpCombination\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/macocci7/php-combination/src',
+        ),
+        'Intervention\\Image\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/intervention/image/src',
+        ),
+        'Intervention\\Gif\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/intervention/gif/src',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -100,6 +145,25 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Nette\\Neon\\Decoder' => __DIR__ . '/..' . '/nette/neon/src/Neon/Decoder.php',
+        'Nette\\Neon\\Encoder' => __DIR__ . '/..' . '/nette/neon/src/Neon/Encoder.php',
+        'Nette\\Neon\\Entity' => __DIR__ . '/..' . '/nette/neon/src/Neon/Entity.php',
+        'Nette\\Neon\\Exception' => __DIR__ . '/..' . '/nette/neon/src/Neon/Exception.php',
+        'Nette\\Neon\\Lexer' => __DIR__ . '/..' . '/nette/neon/src/Neon/Lexer.php',
+        'Nette\\Neon\\Neon' => __DIR__ . '/..' . '/nette/neon/src/Neon/Neon.php',
+        'Nette\\Neon\\Node' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node.php',
+        'Nette\\Neon\\Node\\ArrayItemNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/ArrayItemNode.php',
+        'Nette\\Neon\\Node\\ArrayNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/ArrayNode.php',
+        'Nette\\Neon\\Node\\BlockArrayNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/BlockArrayNode.php',
+        'Nette\\Neon\\Node\\EntityChainNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/EntityChainNode.php',
+        'Nette\\Neon\\Node\\EntityNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/EntityNode.php',
+        'Nette\\Neon\\Node\\InlineArrayNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/InlineArrayNode.php',
+        'Nette\\Neon\\Node\\LiteralNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/LiteralNode.php',
+        'Nette\\Neon\\Node\\StringNode' => __DIR__ . '/..' . '/nette/neon/src/Neon/Node/StringNode.php',
+        'Nette\\Neon\\Parser' => __DIR__ . '/..' . '/nette/neon/src/Neon/Parser.php',
+        'Nette\\Neon\\Token' => __DIR__ . '/..' . '/nette/neon/src/Neon/Token.php',
+        'Nette\\Neon\\TokenStream' => __DIR__ . '/..' . '/nette/neon/src/Neon/TokenStream.php',
+        'Nette\\Neon\\Traverser' => __DIR__ . '/..' . '/nette/neon/src/Neon/Traverser.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

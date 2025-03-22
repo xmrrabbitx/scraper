@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ruleset name="PSR12">
+    <!-- 拡張子が php のものだけに適用 -->
+    <arg name="extensions" value="php" />
+    <!-- rule に PSR12 を指定 -->
+    <rule ref="PSR12" />
+    <!-- ルール毎の除外ファイル、ディレクトリ -->
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <!-- オプション p:進捗表示 s:エラー表示時にルールを表示 -->
+    <arg value="ps" />
+
+    <!-- 対象のファイル、ディレクトリ -->
+    <file>src</file>
+    <file>examples</file>
+    <file>tests</file>
+
+    <!-- 除外ファイル、ディレクトリ -->
+    <exclude-pattern>*/lib/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+</ruleset>

@@ -1,0 +1,16 @@
+parameters:
+    level: 6
+    checkGenericClassInNonGenericObjectType: false
+        
+    paths:
+        - src
+    
+    excludePaths:
+        - src/internal/jpgraph
+        
+    scanDirectories:
+        - vendor
+        - src/internal/jpgraph/src
+        
+    scanFiles:
+        - src/internal/jpgraph/src/jpgraph.php

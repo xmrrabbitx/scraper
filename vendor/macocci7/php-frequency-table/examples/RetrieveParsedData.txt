@@ -1,0 +1,129 @@
+Array
+(
+    [classRange] => 10
+    [data] => Array
+        (
+            [0] => 0
+            [1] => 5
+            [2] => 10
+            [3] => 15
+            [4] => 20
+        )
+
+    [Max] => 20
+    [Min] => 0
+    [DataRange] => 20
+    [Mode] => 5
+    [Total] => 5
+    [Mean] => 13
+    [Median] => 10
+    [MedianClass] => Array
+        (
+            [index] => 1
+            [bottom] => 10
+            [top] => 20
+        )
+
+    [FirstQuartile] => 2.5
+    [ThirdQuartile] => 17.5
+    [InterQuartileRange] => 15
+    [QuartileDeviation] => 7.5
+    [Classes] => Array
+        (
+            [0] => Array
+                (
+                    [bottom] => 0
+                    [top] => 10
+                )
+
+            [1] => Array
+                (
+                    [bottom] => 10
+                    [top] => 20
+                )
+
+            [2] => Array
+                (
+                    [bottom] => 20
+                    [top] => 30
+                )
+
+        )
+
+    [Frequencies] => Array
+        (
+            [0] => 2
+            [1] => 2
+            [2] => 1
+        )
+
+    [Subtotals] => Array
+        (
+            [0] => 5
+            [1] => 25
+            [2] => 20
+        )
+
+    [FrequencyTable] => Array
+        (
+            [tableHead] => Array
+                (
+                    [0] => Class
+                    [1] => Frequency
+                    [2] => RelativeFrequency
+                    [3] => ClassValue
+                    [4] => ClassValue * Frequency
+                )
+
+            [classData] => Array
+                (
+                    [0] => Array
+                        (
+                            [Class] => 0 ~ 10
+                            [Frequency] => 2
+                            [RelativeFrequency] => 0.40
+                            [ClassValue] => 5.0
+                            [ClassValue * Frequency] => 10.0
+                        )
+
+                    [1] => Array
+                        (
+                            [Class] => 10 ~ 20
+                            [Frequency] => 2
+                            [RelativeFrequency] => 0.40
+                            [ClassValue] => 15.0
+                            [ClassValue * Frequency] => 30.0
+                        )
+
+                    [2] => Array
+                        (
+                            [Class] => 20 ~ 30
+                            [Frequency] => 1
+                            [RelativeFrequency] => 0.20
+                            [ClassValue] => 25.0
+                            [ClassValue * Frequency] => 25.0
+                        )
+
+                )
+
+            [total] => Array
+                (
+                    [Class] => Total
+                    [Frequency] => 5
+                    [RelativeFrequency] => 1.00
+                    [ClassValue] => ---
+                    [ClassValue * Frequency] => 65.0
+                )
+
+            [mean] => Array
+                (
+                    [Class] => Mean
+                    [Frequency] => ---
+                    [RelativeFrequency] => ---
+                    [ClassValue] => ---
+                    [ClassValue * Frequency] => 13.0
+                )
+
+        )
+
+)

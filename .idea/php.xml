@@ -26,6 +26,15 @@
       <path value="$PROJECT_DIR$/vendor/maennchen/zipstream-php" />
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <path value="$PROJECT_DIR$/vendor/sqonk/phext-core" />
+      <path value="$PROJECT_DIR$/vendor/sqonk/phext-plotlib" />
+      <path value="$PROJECT_DIR$/vendor/intervention/gif" />
+      <path value="$PROJECT_DIR$/vendor/intervention/image" />
+      <path value="$PROJECT_DIR$/vendor/macocci7/php-scatterplot" />
+      <path value="$PROJECT_DIR$/vendor/nette/neon" />
+      <path value="$PROJECT_DIR$/vendor/macocci7/php-csv" />
+      <path value="$PROJECT_DIR$/vendor/macocci7/php-frequency-table" />
+      <path value="$PROJECT_DIR$/vendor/macocci7/php-combination" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />

@@ -17,5 +17,12 @@
       "ext-json": "*",
       "phpoffice/phpspreadsheet": "^4.1",
       "ext-intl": "*",
+        "sqonk/phext-plotlib": "^1.1",
+        "macocci7/php-scatterplot": "^1.2"
+    },
+    "config": {
+      "platform":{
+        "ext-imagick": "3.4.4"
+      }
     }
 }

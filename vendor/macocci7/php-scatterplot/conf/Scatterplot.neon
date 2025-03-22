@@ -1,0 +1,111 @@
+# Configuration for Macocci7\PhpScatterplot\Scatterplot
+
+props:
+    CANVAS_WIDTH_LIMIT_LOWER: 100
+    CANVAS_HEIGHT_LIMIT_LOWER: 100
+
+validConfig:
+    canvasWidth:
+        type: int
+    canvasHeight:
+        type: int
+    canvasBackgroundColor:
+        type: colorCode|null
+    frameXRatio:
+        type: float
+    frameYRatio:
+        type: float
+    axisColor:
+        type: colorCode|null
+    axisWidth:
+        type: int
+    gridColor:
+        type: colorCode|null
+    gridWidth:
+        type: int
+    gridXPitch:
+        type: number
+    gridYPitch:
+        type: number
+    gridX:
+        type: bool
+    gridY:
+        type: bool
+    xLimitUpper:
+        type: number
+    xLimitLower:
+        type: number
+    yLimitUpper:
+        type: number
+    yLimitLower:
+        type: number
+    plotDiameter:
+        type: int
+    plotColor:
+        type: colorCode|null
+    fontPath:
+        type: string
+    fontSize:
+        type: number
+    fontColor:
+        type: colorCode|null
+    regressionLine:
+        type: bool
+    regressionLineWidth:
+        type: int
+    labelX:
+        type: string
+    labelY:
+        type: string
+    caption:
+        type: string
+    legend:
+        type: bool
+    legendCount:
+        type: int
+    legends:
+        type: array
+    referenceLineX:
+        type: bool
+    referenceLineXValue:
+        type: number
+    referenceLineXWidth:
+        type: int
+    referenceLineXColor:
+        type: colorCode|null
+    referenceLineY:
+        type: bool
+    referenceLineYValue:
+        type: number
+    referenceLineYWidth:
+        type: int
+    referenceLineYColor:
+        type: colorCode
+    specificationLimitX:
+        type: bool
+    specificationLimitXLower:
+        type: number
+    specificationLimitXUpper:
+        type: number
+    specificationLimitXWidth:
+        type: int
+    specificationLimitXColor:
+        type: colorCode|null
+    specificationLimitY:
+        type: bool
+    specificationLimitYLower:
+        type: number
+    specificationLimitYUpper:
+        type: number
+    specificationLimitYWidth:
+        type: int
+    specificationLimitYColor:
+        type: colorCode|null
+    legendWidth:
+        type: int
+    legendFontSize:
+        type: number
+    colors:
+        type: colorCodes
+    regressionLineColors:
+        type: colorCodes

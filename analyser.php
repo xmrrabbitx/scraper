@@ -1,6 +1,5 @@
 <?php
 
-
 include "./vendor/autoload.php";
 
 use Scraper\Trader\analysis\analytic;

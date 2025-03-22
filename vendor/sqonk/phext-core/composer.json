@@ -1,0 +1,30 @@
+{
+    "name": "sqonk/phext-core",
+    "description": "This is the core package to the PHEXT set of libraries for PHP. It includes general utility methods for strings, arrays, dates and numbers, each of which exist as a grouped class with the methods statically accessible.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Theo Howell",
+            "email": "sqonk@sqonk.com.au"
+        }
+    ],
+	"keywords": ["strings","arrays","dates","numbers","utilities"],
+	"autoload": {
+        "psr-4": {
+			"sqonk\\phext\\core\\": "src/"
+		},
+		"files": ["src/global_functions.php"]
+    },
+    "require": {
+    	"php": "^8"
+    },
+	"suggest": {
+		"ext-iconv": "Needed for string cleaning functions.",
+		"ext-mbstring": "Needed for string cleaning functions."
+	},
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "phpstan/phpstan": "^1.9"
+    }
+}
