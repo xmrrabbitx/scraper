@@ -4,6 +4,21 @@ namespace Scraper\Trader\scripts;
 
 use Scraper\Trader\analysis\analytic;
 
+class analyser
+{
+    const BASE_PATH = "./src/xls";
+    public function getTypes(string $filePath)
+    {
+        foreach (scandir(self::BASE_PATH) as $directories){
+            if($directories === $filePath){
+                $path = scandir(self::BASE_PATH . "/" . $filePath);
+                $path = array_diff($path, ['.', '..']);
+            }
+        }
+        return $path ?? [];
+    }
+}
+/*
 $sumProducts = 0;
 $sumProducts2 = 0;
 $sumTypes = 0;
@@ -41,3 +56,4 @@ $plot->medianScatter($sumTypesPrices);
 $result2 = $analytic->fTP($sumTypes2, $sumProducts2);
 //var_dump($result2);
 //var_dump($analytic2->medianType($sumTypesPrices2));
+*/
