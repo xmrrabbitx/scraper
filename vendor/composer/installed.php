@@ -3,7 +3,7 @@
         'name' => 'scraper/trader',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '618e90a20afaa20ee29978f3b983d5e2d57f73b1',
+        'reference' => '6e2b9efca66dc054fabb06923bea8a4e14fd4eaa',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -211,7 +211,7 @@
         'scraper/trader' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '618e90a20afaa20ee29978f3b983d5e2d57f73b1',
+            'reference' => '6e2b9efca66dc054fabb06923bea8a4e14fd4eaa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

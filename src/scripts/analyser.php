@@ -1,6 +1,6 @@
 <?php
 
-include "./vendor/autoload.php";
+namespace Scraper\Trader\scripts;
 
 use Scraper\Trader\analysis\analytic;
 
@@ -18,7 +18,7 @@ for ($i=0;$i<=30;$i++) {
         $sumProducts = $sumProducts + $ft1['sumProducts'];
         $sumTypes = $sumTypes + $ft1['sumTypes'];
         $sumTypesPrices = $ft1['listPrices'];
-        var_dump($sumTypesPrices);
+
     }
     if (is_file("./src/xls/Divar/shoesBeltBag/simple/1403/12/".$i.".xls")) {
         $analytic2 = new analytic("./src/xls/Divar/shoesBeltBag/simple/1403/12/".$i.".xls");
@@ -33,7 +33,10 @@ for ($i=0;$i<=30;$i++) {
 
 $result = $analytic->fTP($sumTypes, $sumProducts);
 //var_dump($result);
-//var_dump($analytic->medianType($sumTypesPrices));
+$med = $analytic->medianType($sumTypesPrices);
+//var_dump($med);
+$plot = new plotAnalyser();
+$plot->medianScatter($sumTypesPrices);
 
 $result2 = $analytic->fTP($sumTypes2, $sumProducts2);
 //var_dump($result2);

@@ -1,6 +1,6 @@
 <?php
 
-include "./vendor/autoload.php";
+namespace Scraper\Trader\scripts;
 
 use Macocci7\PhpScatterplot\Scatterplot;
 
@@ -13,12 +13,16 @@ class plotAnalyser
         $this->plot = new Scatterplot();
 
     }
-    public function medianScatter()
+    public function medianScatter(array $medArray, array $medArray2)
     {
         $layers = [
             [
-                'x' => [ 10000, 100000, 200000, 300000, 1000000 ],
-                'y' => [ 10000, 100000, 200000, 300000, 1000000 ],
+                'x' => $medArray,
+                'y' => $medArray,
+            ],
+            [
+                'x' => $medArray2,
+                'y' => $medArray2,
             ],
         ];
 
@@ -27,6 +31,3 @@ class plotAnalyser
 
     }
 }
-
-$plot = new plotAnalyser();
-$plot->medianScatter();

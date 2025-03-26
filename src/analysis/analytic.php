@@ -149,7 +149,7 @@ class analytic
             $description = $info[1];
             if(preg_match("/$type/", $description)){
                 $listTypes[] = $description;
-                $listPrices[] = $info[5];
+                $listPrices[] = (int)$info[5];
             }
         }
         return [
