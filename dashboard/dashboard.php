@@ -1,21 +1,29 @@
 <?php
 
-include "vendor/autoload.php";
+include "../vendor/autoload.php";
 
 use Scraper\Trader\scripts\analyser;
-use Scraper\Trader\Divar\divarApi;
-use Scraper\Trader\scripts\scraper;
-
-$analyser = new analyser();
-$types = $analyser->getTypes("Divar");
-if(!empty($types)){
-    foreach ($types as $type){
-        print("<div>$type</div>");
-    }
-}
 
 
-//$scraper = new scraper();
-//$scraper->scrape();
+// html entities
+print("
+
+    <a href='./plot.php' id='plotPage'>plot Page</a>
+    <a href='./scraper.php' id='scraperPage'>scraper Page</a>
+    
+
+");
 
 
+// js entities
+print("
+    <script>
+        let plotPage = document.getElementById('plotPage')
+        plotPage.addEventListener('click', function (){
+            
+            console.log('click'); 
+        });
+    </script>
+    
+
+");

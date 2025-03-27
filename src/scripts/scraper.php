@@ -8,12 +8,17 @@ use GuzzleHttp\Pool;
 
 class scraper
 {
-    public function scrape()
+    /**
+     * @param string $className
+     * @return void
+     */
+    public function scrapeDivar(string $className)
     {
         $divar= new divarApi();
 
-        $divar->cloth();
-        $divar->stationery();
+        $divar->$className();
+        //$divar->cloth();
+        //$divar->stationery();
         //$divar->shoesBeltBag("major", null, 0, "1403/11/01");
         //$divar->shoesBeltBag();
         //$divar->accessories();

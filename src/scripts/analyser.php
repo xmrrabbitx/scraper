@@ -6,15 +6,17 @@ use Scraper\Trader\analysis\analytic;
 
 class analyser
 {
-    const BASE_PATH = "./src/xls";
-    public function getTypes(string $filePath)
+    const BASE_PATH = "../src/xls";
+
+    public function getTypeProducts(string $dirPath): array
     {
         foreach (scandir(self::BASE_PATH) as $directories){
-            if($directories === $filePath){
-                $path = scandir(self::BASE_PATH . "/" . $filePath);
+            if($directories === $dirPath){
+                $path = scandir(self::BASE_PATH . "/" . $dirPath);
                 $path = array_diff($path, ['.', '..']);
             }
         }
+
         return $path ?? [];
     }
 }
