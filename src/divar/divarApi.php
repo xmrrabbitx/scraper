@@ -556,7 +556,6 @@ class divarApi extends apiRequest
      */
     protected function parseExport($filterPrice, $categoryName,  $rsp):bool
     {
-
         // check if day is ended
         $cdate = explode("/",currentDate());
         $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
@@ -586,6 +585,7 @@ class divarApi extends apiRequest
                 }
 
                 $date = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
+                $time = explode("T", $adsList->action_log->server_side_info->info->sort_date)[1];
                 $date = explode("-", $date);
                 $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
                 $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
@@ -606,6 +606,7 @@ class divarApi extends apiRequest
                             "city" => $adsList->data->action->payload->web_info->city_persian,
                             "district" => $adsList->data->action->payload->web_info->district_persian,
                             "date" => $dateShamsi,
+                            "time"=>$time,
                             "price" => $price,
                             "ads_owner" => $ads_owner,
                             'token' => $adsList->data->action->payload->token
@@ -628,9 +629,10 @@ class divarApi extends apiRequest
                 $sheet->setCellValue("C1", "city");
                 $sheet->setCellValue("D1", "district");
                 $sheet->setCellValue("E1", "date");
-                $sheet->setCellValue("F1", "price");
-                $sheet->setCellValue("G1", "ads_owner");
-                $sheet->setCellValue("H1", "token");
+                $sheet->setCellValue("F1", "time");
+                $sheet->setCellValue("G1", "price");
+                $sheet->setCellValue("H1", "ads_owner");
+                $sheet->setCellValue("I1", "token");
 
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
@@ -649,9 +651,10 @@ class divarApi extends apiRequest
                     $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['city']);
                     $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['district']);
                     $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['date']);
-                    $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['price']);
-                    $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['ads_owner']);
-                    $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['token']);
+                    $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['time']);
+                    $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['price']);
+                    $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
+                    $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
 
                 }
                 // store into Excel
@@ -703,6 +706,7 @@ class divarApi extends apiRequest
                     }
 
                     $date = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
+                    $time = explode("T", $adsList->action_log->server_side_info->info->sort_date)[1];
                     $date = explode("-", $date);
                     $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
                     $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
@@ -722,6 +726,7 @@ class divarApi extends apiRequest
                                 "city" => $adsList->data->action->payload->web_info->city_persian,
                                 "district" => $adsList->data->action->payload->web_info->district_persian,
                                 "date" => $dateShamsi,
+                                "time"=>$time,
                                 "price" => $price,
                                 "ads_owner" => $ads_owner,
                                 'token' => $adsList->data->action->payload->token
@@ -744,9 +749,10 @@ class divarApi extends apiRequest
                 $sheet->setCellValue("C1", "city");
                 $sheet->setCellValue("D1", "district");
                 $sheet->setCellValue("E1", "date");
-                $sheet->setCellValue("F1", "price");
-                $sheet->setCellValue("G1", "ads_owner");
-                $sheet->setCellValue("H1", "token");
+                $sheet->setCellValue("F1", "time");
+                $sheet->setCellValue("G1", "price");
+                $sheet->setCellValue("H1", "ads_owner");
+                $sheet->setCellValue("I1", "token");
 
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
@@ -764,9 +770,10 @@ class divarApi extends apiRequest
                     $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['city']);
                     $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['district']);
                     $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['date']);
-                    $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['price']);
-                    $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['ads_owner']);
-                    $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['token']);
+                    $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['time']);
+                    $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['price']);
+                    $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
+                    $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
 
                 }
                 // store into Excel

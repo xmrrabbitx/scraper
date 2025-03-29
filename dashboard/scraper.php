@@ -15,8 +15,10 @@ print("
 ");
 
 print("<h3>Divar</h3>");
-//$scraper = new scraper();
-//$scraper->scrapeDivar('cloth');
+$list = ['cloth'];
+foreach ($list as $types){
+    print("<span id='Divar_$types' class='type_'>$types</span>");
+}
 
 // js entities
 print("
@@ -26,7 +28,13 @@ print("
         scraperTypes.forEach(function(element) {
             element.addEventListener('click', function(event) {
                 let id = element.id;
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '../src/scripts/scraper.php');
+                xhr.send();
                 
+                xhr.onload = function(resp) {
+                  
+                };
             });
         });
         

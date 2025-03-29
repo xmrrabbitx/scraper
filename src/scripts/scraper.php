@@ -32,3 +32,4 @@ class scraper
     }
 }
 
+die("okkkk");
