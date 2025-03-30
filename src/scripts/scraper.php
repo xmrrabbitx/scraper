@@ -2,34 +2,31 @@
 
 namespace Scraper\Trader\scripts;
 
-use Scraper\Trader\analysis\analytic;
+use ReflectionClass;
 use Scraper\Trader\divar\divarApi;
-use GuzzleHttp\Pool;
 
-class scraper
-{
-    /**
-     * @param string $className
-     * @return void
-     */
-    public function scrapeDivar(string $className)
-    {
-        $divar= new divarApi();
+include "../../vendor/autoload.php";
 
-        $divar->$className();
-        //$divar->cloth();
-        //$divar->stationery();
-        //$divar->shoesBeltBag("major", null, 0, "1403/11/01");
-        //$divar->shoesBeltBag();
-        //$divar->accessories();
-        //$divar->healthBeauty();
+// check if any data sent to page
+$data = $_POST;
+if(isset($data)){
 
-        //$divar->childrensClothingShoe("major", null, 0, "1403/11/01");
-        //$divar->childrensClothingShoe();
+    $className = "Scraper\\Trader\\" . $data['className'] . "\\". $data['className'] . 'Api';
+    $divar = new $className;
 
-        //$divar->stationery("major", null, 0, "1403/11/01");
+    if($data['type'] === 'simple') {
 
+        call_user_func([$divar, $data['functionName']]);
+
+    }elseif($data['type'] === 'major') {
+
+        $args = [
+            "major",
+            $data['cityName'],
+            0,
+            $data['date']
+        ];
+        call_user_func_array([$divar, $data['functionName']], $args);
     }
-}
 
-die("okkkk");
+}
