@@ -1,36 +1,27 @@
 <?php
 
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
+use Scraper\Trader\divar\divarApi;
 
-$client = new Client([
-    'base_uri'=> '',
-    'http_errors' => false,
-    'timeout' => 10,
-    'proxy'=>'http://127.0.0.1:8080',
-    'verify'=> false,
-    'allow_redirects' => [
-        'max' => 25,
-        'track_redirects' => true,
-    ],
-]);
-$req = $client->getAsync('https://google.com');
+$divar = new divarApi();
+$clothing = $divar->asyncStruct('clothing');
+$shoes = $divar->asyncStruct('shoes-belt-bag');
+
 $promises = [
-    'request1' => $req,
-    'request2' => $client->getAsync('https://yahoo.com'),
+    'request1' => $clothing,
+    'request2' => $shoes,
 ];
 
 // Run requests concurrently
-$results = Promise\Utils::settle($promises)->wait();
+$results = $divar->asyncRequest($promises);
 
 // Process responses
 foreach ($results as $key => $response) {
     if ($response['state'] === 'fulfilled') {
-       // echo $key . ": " . $response['value']->getBody();
+        echo $key . ": " . $response['value']->getBody();
     } else {
-       // echo $key . ": Failed - " . $response['reason'];
+        echo $key . ": Failed - " . $response['reason'];
     }
 }
 

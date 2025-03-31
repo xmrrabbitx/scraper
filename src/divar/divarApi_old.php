@@ -10,7 +10,7 @@ use function Scraper\Trader\core\utilities\currentDate;
 use function Scraper\Trader\core\utilities\gregorian_to_jalali;
 use function Scraper\Trader\core\utilities\random_user_agent;
 
-class divarApi extends apiRequest
+class divarApi_old extends apiRequest
 {
     protected array $session;
 
@@ -45,9 +45,9 @@ class divarApi extends apiRequest
      * @param string|null $cityName
      * @param int $layerPage
      * @param int $filterPrice filter prices
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return void
      */
-    public function asyncStruct(string $type, string $queryType = null, string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000)
+    public function cloth(string $queryType = null, string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000):void
     {
         try {
 
@@ -57,9 +57,10 @@ class divarApi extends apiRequest
             $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
             $this->session['currentDate'] = $dateShamsi;
 
+            $type = "clothing";
             // query the major products in the category
             if($queryType === "major") {
-                //$this->majorQuery($cityName, $type, "cloth/", $layerPage, $filterPrice, $filterDate);
+                $this->majorQuery($cityName, $type, "cloth/", $layerPage, $filterPrice, $filterDate);
             }else {
                 $data = [
                     "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
@@ -95,8 +96,16 @@ class divarApi extends apiRequest
                     ]
                 ];
 
-              return $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "cloth/simple/", $rsp);
 
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->cloth(null, $cityName, $layerPage);
+                }
             }
 
         }catch (\Exception $error){
@@ -105,6 +114,373 @@ class divarApi extends apiRequest
 
     }
 
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function shoesBeltBag(string $queryType = null,string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "shoes-belt-bag";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type,  "shoesBeltBag/", $layerPage, $filterPrice, $filterDate);
+            }else {
+
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "shoesBeltBag/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->shoesBeltBag(null, $cityName, $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+
+    }
+
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function accessories(string $queryType = null,string $cityName=null, int $layerPage=0,  $filterDate=null,int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "rhinestones";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type, "accessories/", $layerPage, $filterPrice, $filterDate);
+            }else {
+
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "accessories/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->accessories(null, $cityName, $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function healthBeauty(string $queryType = null,string $cityName=null, int $layerPage=0,  $filterDate=null, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "health-beauty";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type, "healthBeauty/", $layerPage, $filterPrice, $filterDate);
+            }else {
+
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "healthBeauty/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->healthBeauty(null, $cityName, $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+    /**
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function stationery(string $queryType = null, string $cityName=null, int $layerPage=0,  $filterDate=null, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "stationery";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type, "stationery/", $layerPage, $filterPrice, $filterDate);
+            }else {
+
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "stationery/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->stationery(null, $cityName, $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
+
+
+    /**
+     * @param string|null $queryType e.g: "major"
+     * @param string|null $cityName
+     * @param int $layerPage
+     * @param int $filterPrice filter prices
+     * @return void
+     */
+    public function childrensClothingShoe(string $queryType = null, string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000):void
+    {
+        try {
+
+            $date = currentDate();
+            $date = explode("/", $date);
+            $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
+            $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
+            $this->session['currentDate'] = $dateShamsi;
+
+            $type = "childrens-clothing-and-shoe";
+            // query the major products in the category
+            if($queryType === "major") {
+                $this->majorQuery($cityName, $type, "childrensClothingShoe/", $layerPage, $filterPrice, $filterDate);
+            }else {
+                // query the simple category
+                $data = [
+                    "city_ids" => [$cityName ?? self::CITY_CODES['tehran']],
+                    "source_view" => "CATEGORY",
+                    "disable_recommendation" => false,
+                    "search_data" => [
+                        "form_data" => [
+                            "data" => [
+                                "category" => [
+                                    "str" => [
+                                        "value" => $type
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    "pagination_data" => [
+                        "@type" => "type.googleapis.com/post_list.PaginationData",
+                        "layer_page" => $layerPage, // older ads
+                        "page" => $layerPage // older ads
+                    ],
+                    "server_payload" => [
+                        "@type" => "type.googleapis.com/widgets.SearchData.ServerPayload",
+                        "additional_form_data" => [
+                            "data" => [
+                                "sort" => [
+                                    "str" => [
+                                        "value" => "sort_date"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $rsp = $this->request('POST', self::SEARCH_CATEGORIES, $data);
+                $status = $this->parseExport($filterPrice, "childrensClothingShoe/simple/", $rsp);
+
+                sleep(5);
+                $layerPage++;
+
+                // next layer date ads
+                if ($status) {
+                    $this->childrensClothingShoe(null, $cityName,  $layerPage);
+                }
+            }
+
+        }catch (\Exception $error){
+            //var_dump($error);
+        }
+    }
 
     /**
      * return major products query
@@ -179,7 +555,7 @@ class divarApi extends apiRequest
      * @param $rsp
      * @return void
      */
-    public function parseExport($filterPrice, $categoryName,  $rsp):bool
+    protected function parseExport($filterPrice, $categoryName,  $rsp):bool
     {
         // check if day is ended
         $cdate = explode("/",currentDate());
@@ -425,13 +801,12 @@ class divarApi extends apiRequest
     /**
      * @param $body
      * @return void
-     * @throws \Exception
      */
     public function checkResponseErrors($body)
     {
         $json = json_decode($body);
         if(isset($json->error_code)){
-            throw new \Exception($json->message->title);
+            throw new SiteException($json->message->title);
         }
     }
 
@@ -441,23 +816,18 @@ class divarApi extends apiRequest
      * @param string $url
      * @param array|null $data
      * @param array|null $headers
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return string
      */
-    private function request(string $method, string $url, array $data = null, array $headers = null): \GuzzleHttp\Promise\PromiseInterface
+    private function request(string $method, string $url, array $data = null, array $headers = null): string
     {
         $headers = array_merge($this->defaultHeaders, $headers ?? []);
         $data = $data !== null ? ['json' => $data] : null;
 
-        if($method === "GET"){
-            return $this->asyncGetRequest($url, $data, $headers);
-        }elseif ($method === "POST") {
-            return $this->asyncPostRequest($url, $data, $headers);
-        }
+        $rsp = $this->submitRequest($method, $url, $data, $headers);
 
-    }
+        $body = (string)$rsp->getBody();
+        $this->checkResponseErrors($body);
 
-    public function asyncRequest($promises)
-    {
-        return $this->asyncSubmitRequest($promises);
+        return $body;
     }
 }
