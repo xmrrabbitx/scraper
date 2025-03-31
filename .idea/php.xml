@@ -35,6 +35,8 @@
       <path value="$PROJECT_DIR$/vendor/macocci7/php-csv" />
       <path value="$PROJECT_DIR$/vendor/macocci7/php-frequency-table" />
       <path value="$PROJECT_DIR$/vendor/macocci7/php-combination" />
+      <path value="$PROJECT_DIR$/vendor/revolt/event-loop" />
+      <path value="$PROJECT_DIR$/vendor/amphp/amp" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />

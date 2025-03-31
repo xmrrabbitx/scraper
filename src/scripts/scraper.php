@@ -2,9 +2,6 @@
 
 namespace Scraper\Trader\scripts;
 
-use ReflectionClass;
-use Scraper\Trader\divar\divarApi;
-
 include "../../vendor/autoload.php";
 
 // check if any data sent to page
@@ -12,11 +9,11 @@ $data = $_POST;
 if(isset($data)){
 
     $className = "Scraper\\Trader\\" . $data['className'] . "\\". $data['className'] . 'Api';
-    $divar = new $className;
+    $class = new $className;
 
     if($data['type'] === 'simple') {
 
-        call_user_func([$divar, $data['functionName']]);
+        call_user_func([$class, $data['functionName']]);
 
     }elseif($data['type'] === 'major') {
 
@@ -26,7 +23,7 @@ if(isset($data)){
             0,
             $data['date']
         ];
-        call_user_func_array([$divar, $data['functionName']], $args);
+        call_user_func_array([$class, $data['functionName']], $args);
     }
 
 }

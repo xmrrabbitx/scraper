@@ -18,7 +18,9 @@
       "phpoffice/phpspreadsheet": "^4.1",
       "ext-intl": "*",
         "sqonk/phext-plotlib": "^1.1",
-        "macocci7/php-scatterplot": "^1.2"
+        "macocci7/php-scatterplot": "^1.2",
+        "amphp/amp": "^3.1",
+        "ext-pcntl": "*"
     },
     "config": {
       "platform":{

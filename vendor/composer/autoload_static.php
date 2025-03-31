@@ -10,6 +10,9 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '1a61293ffb35bbf5a859aee8b172fd23' => __DIR__ . '/..' . '/sqonk/phext-core/src/global_functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '88254829cb0eed057c30eaabb6d8edc4' => __DIR__ . '/..' . '/amphp/amp/src/functions.php',
+        '429ae5f14a13a9076791c19422e10996' => __DIR__ . '/..' . '/amphp/amp/src/Future/functions.php',
+        'c8601a4144b50a7b548da082c89c4dc1' => __DIR__ . '/..' . '/amphp/amp/src/Internal/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '7de56c435892f5b402ee752aaef5fa35' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/BulkPlot.class.php',
         'bfea83a16a06a45b71e5b526f6fa9092' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/JPGraphUtils.php',
@@ -29,6 +32,10 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         'S' => 
         array (
             'Scraper\\Trader\\' => 15,
+        ),
+        'R' => 
+        array (
+            'Revolt\\' => 7,
         ),
         'P' => 
         array (
@@ -61,6 +68,10 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
         ),
+        'A' => 
+        array (
+            'Amp\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -75,6 +86,10 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         'Scraper\\Trader\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Revolt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/revolt/event-loop/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -140,6 +155,10 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+        'Amp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/amphp/amp/src',
         ),
     );
 

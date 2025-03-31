@@ -24,7 +24,6 @@ abstract class apiRequest
                 'max' => 25,
                 'track_redirects' => true,
             ],
-
         ]);
     }
 

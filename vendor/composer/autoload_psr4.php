@@ -9,6 +9,7 @@ return array(
     'sqonk\\phext\\core\\' => array($vendorDir . '/sqonk/phext-core/src'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
     'Scraper\\Trader\\' => array($baseDir . '/src'),
+    'Revolt\\' => array($vendorDir . '/revolt/event-loop/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
@@ -25,4 +26,5 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Composer\\Pcre\\' => array($vendorDir . '/composer/pcre/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
+    'Amp\\' => array($vendorDir . '/amphp/amp/src'),
 );
