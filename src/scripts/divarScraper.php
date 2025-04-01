@@ -4,28 +4,50 @@ require '../../vendor/autoload.php';
 
 use Scraper\Trader\divar\divarApi;
 
-$divar = new divarApi();
-$clothing = $divar->asyncStruct('clothing');
-$shoes = $divar->asyncStruct('shoes-belt-bag');
+$categories = ['clothing', 'shoes-belt-bag'];
+function scrape($categories, $layerPage, $filterPrice)
+{
 
-$promises = [
-    'request1' => $clothing,
-    'request2' => $shoes,
-];
+    $divar = new divarApi();
+    $promises = [];
+    foreach ($categories as $category) {
+        $asyncCategory = $divar->asyncStruct($category, $layerPage);
 
-// Run requests concurrently
-$results = $divar->asyncRequest($promises);
+        $promises[$category] = $asyncCategory;
 
-// Process responses
-foreach ($results as $key => $response) {
-    if ($response['state'] === 'fulfilled') {
-        echo $key . ": " . $response['value']->getBody();
-    } else {
-        echo $key . ": Failed - " . $response['reason'];
+    }
+
+    if(isset($promises)) {
+        // Run requests concurrently
+        $results = $divar->asyncRequest($promises);
+        // Process responses
+        foreach ($results as $categoryName => $response) {
+            if ($response['state'] === 'fulfilled') {
+                var_dump($categoryName);
+                 $rsp = $response['value']->getBody();
+                 $status = $divar->parseExport($filterPrice, $categoryName."/simple/", $rsp);
+
+                 // next layer date ads
+                 if (!$status) {
+                     $categories = array_filter($categories, function($value) {
+                         return $value !== 'b'; // Keeps all elements except 'b'
+                     });
+                 }
+            } else {
+                echo $categoryName . ": Failed - " . $response['reason'];
+            }
+        }
+
+        sleep(5);
+        $layerPage++;
+
+        scrape($categories, $layerPage, $filterPrice);
+
     }
 }
 
 
+scrape($categories, 0, 10000000);
 
 /*
 // html entities
