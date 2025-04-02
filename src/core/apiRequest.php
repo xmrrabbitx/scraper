@@ -78,7 +78,7 @@ abstract class apiRequest
             $data ?? [],
             ['on_stats'=> function ($transferStats) use (&$stats) { $stats = $transferStats; }]
         );
-        return $this->httpClient->postAsync($url, $options);
+        return $this->httpClient->getAsync($url, $options);
     }
 
     /**

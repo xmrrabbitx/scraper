@@ -4,45 +4,46 @@ require '../../vendor/autoload.php';
 
 use Scraper\Trader\divar\divarApi;
 
-$categories = ['clothing', 'shoes-belt-bag'];
+$categories = ['stationery'];
 function scrape($categories, $layerPage, $filterPrice)
 {
+    if(!empty($categories)) {
+        $divar = new divarApi();
+        $promises = [];
+        foreach ($categories as $category) {
+            $asyncCategory = $divar->asyncStruct($category, $layerPage);
 
-    $divar = new divarApi();
-    $promises = [];
-    foreach ($categories as $category) {
-        $asyncCategory = $divar->asyncStruct($category, $layerPage);
+            $promises[$category] = $asyncCategory;
 
-        $promises[$category] = $asyncCategory;
-
-    }
-
-    if(isset($promises)) {
-        // Run requests concurrently
-        $results = $divar->asyncRequest($promises);
-        // Process responses
-        foreach ($results as $categoryName => $response) {
-            if ($response['state'] === 'fulfilled') {
-                var_dump($categoryName);
-                 $rsp = $response['value']->getBody();
-                 $status = $divar->parseExport($filterPrice, $categoryName."/simple/", $rsp);
-
-                 // next layer date ads
-                 if (!$status) {
-                     $categories = array_filter($categories, function($value) {
-                         return $value !== 'b'; // Keeps all elements except 'b'
-                     });
-                 }
-            } else {
-                echo $categoryName . ": Failed - " . $response['reason'];
-            }
         }
 
-        sleep(5);
-        $layerPage++;
+        if (isset($promises)) {
+            // Run requests concurrently
+            $results = $divar->asyncRequest($promises);
+            // Process responses
+            foreach ($results as $categoryName => $response) {
+                if ($response['state'] === 'fulfilled') {
+                    var_dump($categoryName);
+                    $rsp = $response['value']->getBody();
+                    $status = $divar->parseExport($filterPrice, $categoryName . "/simple/", $rsp);
 
-        scrape($categories, $layerPage, $filterPrice);
+                    // next layer date ads
+                    if (!$status) {
+                        $categories = array_filter($categories, function ($value) use (&$categoryName) {
+                            return $value !== $categoryName; // Keeps all elements except $categoryName
+                        });
+                    }
+                } else {
+                    echo $categoryName . ": Failed - " . $response['reason'];
+                }
+            }
 
+            sleep(5);
+            $layerPage++;
+
+            scrape($categories, $layerPage, $filterPrice);
+
+        }
     }
 }
 

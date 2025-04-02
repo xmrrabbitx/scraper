@@ -356,7 +356,7 @@ function parse_user_agent(string $userAgent): array {
  */
 function currentDate()
 {
-    return date('Y/m/d');
+    return date('Y-m-d');
 }
 
 /**

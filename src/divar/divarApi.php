@@ -16,7 +16,7 @@ class divarApi extends apiRequest
 
     const SEARCH_CATEGORIES = "https://api.divar.ir/v8/postlist/w/search";
 
-    const FILE_PATH = "./src/xls/%s";
+    const FILE_PATH = "../xls/%s";
 
     const SCRIPT_NAME = "Divar/";
 
@@ -47,12 +47,12 @@ class divarApi extends apiRequest
      * @param int $filterPrice filter prices
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function asyncStruct(string $type, string $queryType = null, string $cityName=null, int $layerPage=0, $filterDate=null, int $filterPrice=10000000)
+    public function asyncStruct(string $type, int $layerPage, string $queryType = null, string $cityName=null, $filterDate=null, int $filterPrice=10000000)
     {
         try {
 
             $date = currentDate();
-            $date = explode("/", $date);
+            $date = explode("-", $date);
             $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
             $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
             $this->session['currentDate'] = $dateShamsi;
@@ -182,12 +182,12 @@ class divarApi extends apiRequest
     public function parseExport($filterPrice, $categoryName,  $rsp):bool
     {
         // check if day is ended
-        $cdate = explode("/",currentDate());
-        $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
-        $currentDate = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
+        //$cdate = explode("-",currentDate());
+        //$currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
+        //$currentDate = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
 
         // set current date for file name
-        $date = explode("/",currentDate());
+        $date = explode("-",currentDate());
         $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
         $filePath = $dateShamsi[0]."/".$dateShamsi[1]."/";
 
@@ -209,9 +209,9 @@ class divarApi extends apiRequest
                     $ads_owner = "people";
                 }
 
-                $date = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
+                $dateMil = explode("T", $adsList->action_log->server_side_info->info->sort_date)[0];
                 $time = explode("T", $adsList->action_log->server_side_info->info->sort_date)[1];
-                $date = explode("-", $date);
+                $date = explode("-", $dateMil);
                 $dateShamsi = gregorian_to_jalali($date[0], $date[1], $date[2]);
                 $dateShamsi = $dateShamsi[0] . "/" . $dateShamsi[1] . "/" . $dateShamsi[2];
 
@@ -223,7 +223,7 @@ class divarApi extends apiRequest
 
                 if($price !== str_repeat('1', strlen($price)) && $price < $filterPrice) {
 
-                    if($dateShamsi === $currentDate) {
+                    if($dateMil === currentDate()) {
 
                         $info[] = [
                             "title" => $adsList->data->action->payload->web_info->title,
@@ -244,6 +244,7 @@ class divarApi extends apiRequest
         // insert into the file
         if (!is_file($filePath . $fileName)) {
 
+            die("okkkk");
                 // create an instance of Spreadsheet()
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
@@ -268,25 +269,32 @@ class divarApi extends apiRequest
                 $spreadSheet = General::getSheet($filePath . $fileName, "Xls") ?? null;
                 $activeSheet = $spreadSheet->getActiveSheet();
 
+                $tokens = $this->getToken($filePath , $fileName); // list xls file tokens
+
                 foreach ($info as $adsInfo) {
-                    $lastRow = $activeSheet->getHighestRow();
 
-                    $activeSheet->setCellValue("A" . $lastRow + 1, $adsInfo['title']);
-                    $activeSheet->setCellValue("B" . $lastRow + 1, $adsInfo['description']);
-                    $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['city']);
-                    $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['district']);
-                    $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['date']);
-                    $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['time']);
-                    $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['price']);
-                    $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
-                    $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
+                    if(!in_array($adsInfo['token'], $tokens)) {
+                        $lastRow = $activeSheet->getHighestRow();
 
+                        $activeSheet->setCellValue("A" . $lastRow + 1, $adsInfo['title']);
+                        $activeSheet->setCellValue("B" . $lastRow + 1, $adsInfo['description']);
+                        $activeSheet->setCellValue("C" . $lastRow + 1, $adsInfo['city']);
+                        $activeSheet->setCellValue("D" . $lastRow + 1, $adsInfo['district']);
+                        $activeSheet->setCellValue("E" . $lastRow + 1, $adsInfo['date']);
+                        $activeSheet->setCellValue("F" . $lastRow + 1, $adsInfo['time']);
+                        $activeSheet->setCellValue("G" . $lastRow + 1, $adsInfo['price']);
+                        $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
+                        $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
+
+                    }
                 }
+
+
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
+
         }
 
-        //var_dump($info);
         if (empty($info)) {
                 var_dump("end!");
                 $status = false; // end process
@@ -297,6 +305,23 @@ class divarApi extends apiRequest
         }
 
         return $status;
+    }
+
+    /**
+     * list xls file tokens
+     * @param string $filePath
+     * @param string $fileName
+     * @return array
+     */
+    public function getToken(string $filePath ,string $fileName)
+    {
+        $sheetArray = General::getSheetArray($filePath . $fileName, "Xls") ?? null;
+        $tokens = [];
+        foreach ($sheetArray as $xlsInfo){
+            $tokens[] = $xlsInfo[8];
+        }
+
+        return $tokens;
     }
 
     /**
