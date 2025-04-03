@@ -10,18 +10,34 @@ use Scraper\Trader\divar\divarApi;
  * descriptions are 2nd column in Xls file
  * prices are 4th column in Xls file
  */
-class analytic
+class analyser
 {
     protected array|null $activeSheet;
+
+    const BASE_PATH = "../../src/xls/";
 
     /**
      * @param string $filePath
      */
-    public function __construct(string $filePath)
+    public function __construct(string $filePath=null)
     {
+        $this->activeSheet = General::getSheetArray(self::BASE_PATH . $filePath, "Xls");
+    }
 
-        $this->activeSheet = General::getSheetArray($filePath, "Xls");
+    /**
+     * @return array
+     */
+    public function listPrices():array
+    {
+        $listPrices = [];
+        foreach ($this->activeSheet as $index=>$prices){
+            if ($index === 0) {
+                continue;
+            }
+            $listPrices[] = $prices[6];
+        }
 
+        return $listPrices;
     }
 
     /**
@@ -35,7 +51,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[5];
+            $listPrices[] = $prices[6];
         }
 
        return (int)max($listPrices);
@@ -52,7 +68,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[5];
+            $listPrices[] = $prices[6];
         }
 
         return (int)min($listPrices);
@@ -69,7 +85,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[5];
+            $listPrices[] = $prices[6];
         }
 
         return (int)array_sum($listPrices);
@@ -86,7 +102,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[5];
+            $listPrices[] = $prices[6];
         }
 
         return (int)(array_sum($listPrices)/count($listPrices));
@@ -103,7 +119,7 @@ class analytic
             if ($index === 0) {
                 continue;
             }
-            $listPrices[] = $prices[5];
+            $listPrices[] = $prices[6];
         }
         sort($listPrices);
         $length = count($listPrices);
@@ -149,7 +165,7 @@ class analytic
             $description = $info[1];
             if(preg_match("/$type/", $description)){
                 $listTypes[] = $description;
-                $listPrices[] = (int)$info[5];
+                $listPrices[] = (int)$info[6];
             }
         }
         return [
@@ -167,5 +183,21 @@ class analytic
     public function fTP(int $sumTypes, int $sumProducts):float
     {
         return number_format((float)(($sumTypes * 100) / $sumProducts), 5);
+    }
+
+    /**
+     * @param string $dirPath
+     * @return array
+     */
+    public function getCategoryProducts(string $dirPath): array
+    {
+        foreach (scandir(self::BASE_PATH) as $directories){
+            if($directories === $dirPath){
+                $path = scandir(self::BASE_PATH . "/" . $dirPath);
+                $path = array_diff($path, ['.', '..']);
+            }
+        }
+
+        return $path ?? [];
     }
 }

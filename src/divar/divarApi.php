@@ -244,7 +244,6 @@ class divarApi extends apiRequest
         // insert into the file
         if (!is_file($filePath . $fileName)) {
 
-            die("okkkk");
                 // create an instance of Spreadsheet()
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();

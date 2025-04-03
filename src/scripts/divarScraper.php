@@ -4,7 +4,14 @@ require '../../vendor/autoload.php';
 
 use Scraper\Trader\divar\divarApi;
 
-$categories = ['stationery'];
+$categories = [
+    'stationery',
+    "clothing",
+    "health-beauty",
+    "rhinestones",
+    "shoes-belt-bag",
+    "childrens-clothing-and-shoe"
+];
 function scrape($categories, $layerPage, $filterPrice)
 {
     if(!empty($categories)) {

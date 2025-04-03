@@ -3,10 +3,12 @@
 namespace Scraper\Trader\scripts;
 
 use Scraper\Trader\analysis\analytic;
+use function Scraper\Trader\core\utilities\currentDate;
+use function Scraper\Trader\core\utilities\gregorian_to_jalali;
 
 class analyser
 {
-    const BASE_PATH = "../src/xls";
+    const BASE_PATH = "../src/xls/";
 
     public function getTypeProducts(string $dirPath): array
     {
@@ -18,6 +20,18 @@ class analyser
         }
 
         return $path ?? [];
+    }
+
+    public function sumPrices(string $serviceName, string $productCategory, string $type, string $date=null)
+    {
+        if(!$date){
+            $cdate = explode("-", currentDate());
+            $currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
+            $date = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
+        }
+
+        $analytic = new analytic(self::BASE_PATH . $serviceName . "/" . $productCategory . "/" . $type . "/" . $date . ".xls");
+        return $analytic->sum();
     }
 }
 /*

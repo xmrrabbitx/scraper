@@ -1,9 +1,11 @@
 <?php
 
+use Scraper\Trader\analysis\analyser;
+use function Scraper\Trader\core\utilities\currentDate;
+use function Scraper\Trader\core\utilities\gregorian_to_jalali;
+
 include "../vendor/autoload.php";
 
-use Scraper\Trader\scripts\analyser;
-use Scraper\Trader\scripts\scraper;
 
 // html entities
 print("
@@ -12,70 +14,81 @@ print("
     </br>
     </br>
     <h2>Plot Page</h2>
+    <button id='Divar'>Divar</button>
 ");
-
-$analyser = new analyser();
-$types = $analyser->getTypeProducts("Divar");
-if (!empty($types)) {
-    print("Divar:");
-    foreach ($types as $type) {
-         print("
-           <div>
-              <button class='type_' id=$type>$type</button>
-              </br>
-              </br>
-           </div>
-        ");
-    }
-}
 
 // js entities
 print("
     <script>
-        let scraperTypes = document.querySelectorAll('.type_');
-        
-        scraperTypes.forEach(function(element) {
-            element.addEventListener('click', function(event) {
-                let id = element.id;
-                
-            });
-        });
-        
-    </script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'></script>
-    <canvas id='myChart' width='400' height='400'></canvas>
-    <script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const data = {
-                labels: ['January', 'February', 'March', 'April', 'May'],
-                datasets: [{
-                    label: 'My Dataset',
-                    data: [65, 59, 80, 81, 56],
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            };
-     const chart = new Chart(ctx, {
-          type: 'line',
-          data: data,
-          options: {
-            onClick: (e) => {
-              const canvasPosition = getRelativePosition(e, chart);
-        
-              // Substitute the appropriate scale IDs
-              const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
-              const dataY = chart.scales.y.getValueForPixel(canvasPosition.y);
-            }
-          }
-        });
-    </script>
-    <script>
-        let plotPage = document.getElementById('plotPage')
-        plotPage.addEventListener('click', function (){
+        let scraperDivar = document.getElementById('Divar');
+        scraperDivar.addEventListener('click', function (){
+            console.log('click')
+            let xhr = new XMLHttpRequest();
+            // Configure the request
+            xhr.open('GET', '../src/api/analyserApi.php', true); // Change to your endpoint
+            xhr.setRequestHeader('Content-Type', 'application/json');
             
-            console.log('click'); 
+            // Set up the response handler
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Parse the response (assuming JSON)
+                    let response = JSON.parse(xhr.responseText);
+                    let infos = [];
+                    response.forEach(function (values){
+                        infos.push({x:values, y:values})
+                    });
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const data = {
+                        labels: ['January', 'February', 'March', 'April', 'May'],
+                        datasets: [
+                            {
+                                label: 'Divar',
+                                data: infos,
+                                fill: true,
+                                borderColor: 'rgb(255, 99, 132)',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'median prices',
+                                data: [
+                                    { x: 0, y: 20 },
+                                    { x: 100, y: 20 }
+                                ],
+                                type: 'line', // Explicitly set as line
+                                borderColor: 'rgb(54, 162, 235)',
+                                //backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                                //fill: true,
+                                tension: 0.4, // Smooth curve
+                                pointRadius: 0, // Hide line points (optional)
+                            }
+                       
+                        ]
+                    };
+                
+                    const chart = new Chart(ctx, {
+                        type: 'scatter',
+                        data: data,
+                        options: {
+                            scales: {
+                              x: {
+                                type: 'linear',
+                                position: 'bottom'
+                              }
+                            }
+                        }
+                    });
+                }
+                
+            }
+            xhr.send();
         });
+
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'></script>
+    <canvas id='myChart' width='0' height='0'></canvas>
+    <script>
+        
     </script>
     
 ");
