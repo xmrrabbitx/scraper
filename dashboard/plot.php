@@ -62,7 +62,6 @@ print("
                                 tension: 0.4, // Smooth curve
                                 pointRadius: 0, // Hide line points (optional)
                             }
-                       
                         ]
                     };
                 
@@ -79,7 +78,6 @@ print("
                         }
                     });
                 }
-                
             }
             xhr.send();
         });

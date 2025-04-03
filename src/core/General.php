@@ -59,6 +59,9 @@ class General {
 
         $writer->save($filePath . $fileName);
 
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet, $writer);
+        gc_collect_cycles();
     }
 
     /**
