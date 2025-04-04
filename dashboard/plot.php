@@ -25,7 +25,7 @@ print("
             console.log('click')
             let xhr = new XMLHttpRequest();
             // Configure the request
-            xhr.open('GET', '../src/api/analyserApi.php', true); // Change to your endpoint
+            xhr.open('POST', '../src/api/analyserApi.php', true); // Change to your endpoint
             xhr.setRequestHeader('Content-Type', 'application/json');
             
             // Set up the response handler
@@ -79,7 +79,10 @@ print("
                     });
                 }
             }
-            xhr.send();
+            xhr.send(JSON.stringify({
+                'date':'1404/1/15',
+                'category':'clothing'
+            }));
         });
 
     </script>
