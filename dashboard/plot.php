@@ -81,7 +81,7 @@ print("
             }
             xhr.send(JSON.stringify({
                 'date':'1404/1/15',
-                'category':'clothing'
+                'category':'shoes-belt-bag'
             }));
         });
 
