@@ -270,18 +270,8 @@ class divarApi extends apiRequest
 
                 $tokens = $this->getToken($filePath , $fileName); // list xls file tokens
 
-                // terminate process on no updates
-                if(isset($tokens)){
-                    if (!empty($info)) {
-                        if (in_array(end($info)['token'], $tokens)) {
-                            // check if no updates are coming
-                            var_dump("end because of token!");
-                            //var_dump($info);
-                            return false; // end process
-                        }
-                    }
-                }
 
+                $statusList = null;
                 foreach ($info as $adsInfo) {
 
                     if(!in_array($adsInfo['token'], $tokens)) {
@@ -298,6 +288,8 @@ class divarApi extends apiRequest
                         $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
                         $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
 
+                        $statusList =true;
+
                     }
                 }
 
@@ -308,8 +300,10 @@ class divarApi extends apiRequest
 
         if (empty($info)) {
                 var_dump("end date!");
-                var_dump($info);
                 $status = false; // end process
+        }elseif (!$statusList){
+            var_dump("end because of token!");
+            $status = false; // end process
         }
         else {
                 var_dump("next!");
