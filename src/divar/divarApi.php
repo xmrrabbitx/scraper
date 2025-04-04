@@ -273,6 +273,7 @@ class divarApi extends apiRequest
                 foreach ($info as $adsInfo) {
 
                     if(!in_array($adsInfo['token'], $tokens)) {
+
                         $lastRow = $activeSheet->getHighestRow();
 
                         $activeSheet->setCellValue("A" . $lastRow + 1, $adsInfo['title']);
@@ -288,7 +289,6 @@ class divarApi extends apiRequest
                     }
                 }
 
-
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadSheet);
 
@@ -297,13 +297,19 @@ class divarApi extends apiRequest
         if (empty($info)) {
                 var_dump("end!");
                 $status = false; // end process
+        }else if(isset($tokens)){
+            if(in_array($info[0]['token'], $tokens)){
+                // check if no updates are coming
+                var_dump("end because of token!");
+                $status = false; // end process
+            }
         }
         else {
                 var_dump("next!");
                 $status = true; // next process
         }
 
-        return $status;
+        return $status ?? true;
     }
 
     /**
