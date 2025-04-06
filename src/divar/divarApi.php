@@ -263,7 +263,7 @@ class divarApi extends apiRequest
 
                 // store into Excel
                 General::writeSheet($filePath, $fileName, 'Xls', $spreadsheet);
-
+                $statusList = true;
         }
         else {
                 // update the file
