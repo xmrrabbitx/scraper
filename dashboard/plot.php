@@ -6,6 +6,8 @@ use function Scraper\Trader\core\utilities\gregorian_to_jalali;
 
 include "../vendor/autoload.php";
 
+$analyser = new analyser();
+$productCategories = $analyser->getCategoryProductsPlot("Divar");
 
 // html entities
 print("
@@ -14,15 +16,42 @@ print("
     </br>
     </br>
     <h2>Plot Page</h2>
+    
     <button id='Divar'>Divar</button>
+    
+    <label>date from:</label>
+    <input id='dateFrom'>
+    
+    <label>date to:</label>
+    <input id='dateTo'>
+    <h3>Products Categories</h3>
 ");
+
+foreach ($productCategories as $categories){
+    print("
+        <div>
+            <label>$categories</label>
+            <input id='' type='checkbox' value=$categories>
+        </div>
+    ");
+}
 
 // js entities
 print("
     <script>
         let scraperDivar = document.getElementById('Divar');
         scraperDivar.addEventListener('click', function (){
-            console.log('click')
+            
+            let dateFrom = document.getElementById('dateFrom');
+            let dateTo = document.getElementById('dateTo');
+            if(dateFrom.value === '' && dateTo.value === ''){
+                dateFrom = null;
+                dateTo = null;
+            }else {
+                dateFrom = dateFrom.value;
+                dateTo = dateTo.value;
+            }
+            
             let xhr = new XMLHttpRequest();
             // Configure the request
             xhr.open('POST', '../src/api/analyserApi.php', true); // Change to your endpoint
@@ -38,6 +67,10 @@ print("
                         infos.push({x:values, y:values})
                     });
                     const ctx = document.getElementById('myChart').getContext('2d');
+                    // destroy old chart and create new
+                    if (Chart.getChart(ctx)) {
+                        Chart.getChart(ctx).destroy();
+                    }
                     const data = {
                         labels: ['January', 'February', 'March', 'April', 'May'],
                         datasets: [
@@ -80,8 +113,9 @@ print("
                 }
             }
             xhr.send(JSON.stringify({
-                'date':'1404/1/15',
-                'category':'shoes-belt-bag'
+                'dateFrom':dateFrom,
+                'dateTo':dateTo,
+                'category':'clothing'
             }));
         });
 

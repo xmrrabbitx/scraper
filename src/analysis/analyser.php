@@ -15,6 +15,7 @@ class analyser
     protected array|null $activeSheet;
 
     const BASE_PATH = "../../src/xls/";
+    const XLS_PATH_PLOT = "../src/xls/";
 
     /**
      * @param string $filePath
@@ -194,6 +195,22 @@ class analyser
         foreach (scandir(self::BASE_PATH) as $directories){
             if($directories === $dirPath){
                 $path = scandir(self::BASE_PATH . "/" . $dirPath);
+                $path = array_diff($path, ['.', '..']);
+            }
+        }
+
+        return $path ?? [];
+    }
+
+    /**
+     * @param string $dirPath
+     * @return array
+     */
+    public function getCategoryProductsPlot(string $dirPath): array
+    {
+        foreach (scandir(self::XLS_PATH_PLOT) as $directories){
+            if($directories === $dirPath){
+                $path = scandir(self::XLS_PATH_PLOT . "/" . $dirPath);
                 $path = array_diff($path, ['.', '..']);
             }
         }

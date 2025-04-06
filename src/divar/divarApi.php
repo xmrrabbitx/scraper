@@ -186,6 +186,8 @@ class divarApi extends apiRequest
         //$currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
         //$currentDate = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
 
+        $statusList = null;
+
         // set current date for file name
         $date = explode("-",currentDate());
         $dateShamsi = gregorian_to_jalali($date[0],$date[1], $date[2]);
@@ -270,8 +272,6 @@ class divarApi extends apiRequest
 
                 $tokens = $this->getToken($filePath , $fileName); // list xls file tokens
 
-
-                $statusList = null;
                 foreach ($info as $adsInfo) {
 
                     if(!in_array($adsInfo['token'], $tokens)) {
@@ -288,7 +288,7 @@ class divarApi extends apiRequest
                         $activeSheet->setCellValue("H" . $lastRow + 1, $adsInfo['ads_owner']);
                         $activeSheet->setCellValue("I" . $lastRow + 1, $adsInfo['token']);
 
-                        $statusList =true;
+                        $statusList = true;
 
                     }
                 }
