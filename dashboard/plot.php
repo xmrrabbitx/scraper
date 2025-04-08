@@ -52,6 +52,8 @@ print("
                 dateTo = dateTo.value;
             }
             
+            let categories = ['clothing','stationery'];
+            
             let xhr = new XMLHttpRequest();
             // Configure the request
             xhr.open('POST', '../src/api/analyserApi.php', true); // Change to your endpoint
@@ -62,10 +64,36 @@ print("
                 if (xhr.status === 200) {
                     // Parse the response (assuming JSON)
                     let response = JSON.parse(xhr.responseText);
-                    let infos = [];
-                    response.forEach(function (values){
-                        infos.push({x:values, y:values})
+                    console.log(response)
+                    let infos = [[], []];
+                    response.forEach(function (values, index){
+                        values.forEach(function (value){
+                           infos[index].push({x:value, y:value}); 
+                        });
                     });
+                    function getRandomRGB() {
+                      const r = Math.floor(Math.random() * 256);
+                      const g = Math.floor(Math.random() * 256);
+                      const b = Math.floor(Math.random() * 256);
+                      return {r,g,b};
+                    }
+                    
+                    let datast = [];
+                    infos.forEach(function (values, index){
+                      
+                        datast.push(
+                          {
+                                label: categories[index],
+                                data: infos[index],
+                                fill: true,
+                                //borderColor: 'rgb(' + getRandomRGB().r + ',' + getRandomRGB().g + ',' + getRandomRGB().b + ')',
+                                backgroundColor: 'rgb(' + getRandomRGB().r + ',' + getRandomRGB().g + ',' + getRandomRGB().b + ')',
+                                tension: 0.1
+                            }  
+                            
+                        );
+                    });
+                    console.log(datast)
                     const ctx = document.getElementById('myChart').getContext('2d');
                     // destroy old chart and create new
                     if (Chart.getChart(ctx)) {
@@ -74,15 +102,8 @@ print("
                     const data = {
                         labels: ['January', 'February', 'March', 'April', 'May'],
                         datasets: [
-                            {
-                                label: 'Divar',
-                                data: infos,
-                                fill: true,
-                                borderColor: 'rgb(255, 99, 132)',
-                                backgroundColor: 'rgb(255, 99, 132)',
-                                tension: 0.1
-                            },
-                            {
+                            ...datast
+                            ,{
                                 label: 'median prices',
                                 data: [
                                     { x: 0, y: 20 },
@@ -115,7 +136,7 @@ print("
             xhr.send(JSON.stringify({
                 'dateFrom':dateFrom,
                 'dateTo':dateTo,
-                'category':'clothing'
+                'categories':categories
             }));
         });
 

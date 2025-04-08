@@ -14,7 +14,7 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 $dateFrom = $data['dateFrom'] ?? null;
 $dateTo = $data['dateTo'] ?? null;
-$category = $data['category'] ?? null;
+$categories = $data['categories'] ?? null;
 $analyser = new analyser();
 $productCategories = $analyser->getCategoryProducts("Divar");
 
@@ -29,11 +29,13 @@ if (!empty($productCategories)) {
     }else{
 
     }
+    $listPrices = [];
+    foreach ($categories as $category) {
+        $filePath = 'Divar/' . $category . "/" . 'simple/' . $date . '.xls';
+        $analyser = new analyser($filePath);
 
-    $filePath = 'Divar/' . $category . "/" . 'simple/' . $date . '.xls';
-    $analyser = new analyser($filePath);
-
-    $listPrices = $analyser->listPrices();
+        $listPrices[] = $analyser->listPrices();
+    }
 
 }
 
