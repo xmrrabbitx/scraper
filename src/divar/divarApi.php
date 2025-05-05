@@ -35,9 +35,9 @@ class divarApi extends apiRequest
         'Accept-Language'=> 'en,fa;q=0.9,en-US;q=0.8',
     ];
 
-    public function __construct()
+    public function __construct(string $proxy='')
     {
-        parent::__construct();
+        parent::__construct($proxy);
         $this->defaultHeaders['User-Agent'] = random_user_agent();
     }
 

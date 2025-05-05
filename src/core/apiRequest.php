@@ -13,13 +13,13 @@ abstract class apiRequest
 
     private HttpClient $httpClient;
 
-    public function __construct()
+    public function __construct(string $proxy='')
     {
         $this->httpClient = new HttpClient([
             'base_uri'=> '',
             'http_errors' => false,
             'timeout' => 10,
-            'proxy'=>'http://127.0.0.1:8080',
+            'proxy'=>$proxy,
             'verify'=> false,
             'allow_redirects' => [
                 'max' => 25,

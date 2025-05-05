@@ -52,7 +52,7 @@ print("
                 dateTo = dateTo.value;
             }
             
-            let categories = ['clothing','stationery'];
+            let categories = ['clothing','health-beauty'];
             
             let xhr = new XMLHttpRequest();
             // Configure the request
