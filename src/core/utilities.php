@@ -3,48 +3,6 @@
 namespace Scraper\Trader\core\utilities;
 
 /**
- * Provides URL-safe base64 encoding.
- * Code taken from https://www.php.net/manual/en/function.base64-encode.php#123098
- */
-function base64_encode_url_safe(string $data): string {
-    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-}
-
-/**
- * Provides URL-safe base64 decoding.
- * Code taken from https://www.php.net/manual/en/function.base64-encode.php#123098
- */
-function base64_decode_url_safe(string $data): string {
-    return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
-}
-
-/**
- * Generates random UUIDs.
- * code taken from https://stackoverflow.com/questions/2040240/php-function-to-generate-v4-uuid/15875555#15875555
- */
-function uuid_v4() {
-    $data = random_bytes(16);
-    $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
-    $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
-
-    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-}
-
-/**
- * Generates random UUIDs.
- * code taken from https://github.com/abmmhasan/UUID/blob/main/src/Uuid.php#L47
- */
-function uuid_v3(string $name, string $namespace = '') {
-    $namespace = hex2bin(str_replace('-', '', $namespace));
-
-    $data = hash('md5', "{$namespace}{$name}", true);
-    $data[6] = chr(ord($data[6]) & 0x0f | 0x30);
-    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-
-    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-}
-
-/**
  * Generates Iranian timestamp - Tehran, GMT+3:30
  *
  * @param bool $utc optional, set UTC timezone
@@ -57,40 +15,6 @@ function ir_timestamp(bool $utc = false): int {
 
     return strtotime($dt->format('Y-m-d H:i:s'));
 }
-
-/**
- * Generates new random, valid IMEI numbers.
- *
- * @param int $size number of digits
- */
-function generate_imei(int $size = 15): string {
-    $luhn_residue = function(string $number): int {
-        $sum = 0;
-        for ($i = 0; $i < strlen($number); $i++) {
-            $sum += $i % 2 ? $number[$i] * 2 % 10 + (int)($number[$i] > 4) : $number[$i];
-        }
-        return (round($sum + 5, -1) - $sum) % 10;
-    };
-
-    $num = '35' . implode('', array_map(function () {return rand(0, 9);}, range(0, $size -4)));
-    $res = $luhn_residue($num);
-
-    return "{$num}{$res}";
-}
-
-/**
- * Masks the middle digits of card numbers with "*" characters.
- *
- * @param string $number card number
- * @param int $first the number of visible digits at the beginning
- * @param int $last the number of visible digits at the end
- */
-function maskCard(string $number, int $first = 6, int $last = 4): string {
-    $mask = str_repeat('*', strlen($number) - $first - $last);
-
-    return substr($number, 0, $first) . $mask . substr($number, $first + strlen($mask));
-}
-
 
 const MOBILE_DEVICES = [
     [
@@ -261,93 +185,6 @@ const DESKTOP_USER_AGENTS = [
 function random_user_agent(bool $mobileOnly = false): string {
     $uaList = $mobileOnly ? MOBILE_USER_AGENTS : array_merge(MOBILE_USER_AGENTS, DESKTOP_USER_AGENTS);
     return $uaList[array_rand($uaList)];
-}
-
-/**
- * Returns the SSL pin of a host.
- *
- * @param string $host the host
- * @param string $proxy optional, a HTTP proxy
- * @param float $timeout optional, connection timeout
- * @throws CurlException on connection or security errors
- */
-function get_ssl_pin(string $host, string $proxy = null, float $timeout = 60): string {
-    $proxyAuth = null;
-    if ($proxy) {
-        $proxy = str_replace('http://', '', $proxy);
-        if (preg_match('/@/', $proxy)) {
-            $proxyParts = explode('@', $proxy);
-            $proxy = $proxyParts[1];
-            $proxyAuth = base64_encode($proxyParts[0]);
-        }
-    }
-
-    $opts = [
-        'ssl' => [
-            'capture_peer_cert' => true,
-            'verify_peer' => true,
-        ],
-        'http' => [
-            'user_agent'=> "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0\r\n",
-            'protocol_version'=> 1.1,
-            'ignore_errors'=> true,
-            'proxy'=> $proxy,
-            'timeout'=> $timeout,
-        ],
-    ];
-    if ($proxyAuth) {
-        $opts['http']['header'] = "Proxy-Authorization: Basic $proxyAuth";
-    }
-    $context = stream_context_create($opts);
-
-    set_error_handler(function($err, $msg) {
-        if ($msg !== 'fopen(): SSL: Success') {
-            throw new CurlException($msg, $err);
-        }
-    });
-
-    try {
-        $fp = fopen("https://$host/", 'rb', false, $context);
-    } catch (CurlException $e) {
-        if (preg_match('/(proxy|timed out)/', $e->getMessage())) {
-            $fp = fopen("https://$host/", 'rb', false, $context);
-        } else {
-            throw $e;
-        }
-    } finally {
-        restore_error_handler();
-    }
-
-    $params = stream_context_get_params($fp);
-    $cert = $params['options']['ssl']['peer_certificate'];
-    openssl_x509_export($cert, $cert);
-
-    $pkey = openssl_pkey_get_details(openssl_pkey_get_public($cert))['key'];
-    $der = base64_decode(preg_replace("/\r*\n/", "", explode('-----', $pkey)[2]));
-    $digest = base64_encode(hash('sha256', $der, true));
-
-    return "sha256//$digest";
-}
-
-
-/**
- * Extracts device and browser details from user-agent string
- * @param string $userAgent user-agent
- */
-function parse_user_agent(string $userAgent): array {
-    $model = preg_match('/; ([^\s]+)\)/', $userAgent, $match) ? $match[1] : 'SM-A102U';
-    $android = preg_match('/Android\s+([\d\.]+)/', $userAgent, $match) ? $match[1] : '7';
-    $browser = preg_match('/\s+(Chrome|Gecko)\/(\d+)/', $userAgent, $match) ? $match : ['', 'Chrome', '95'];
-    $brand = preg_match('/\d; (LM|LG|SM)-/', $userAgent, $match) ? $match[1] : 'LG';
-    $brands = ['LG'=> 'LG', 'LM'=> 'LG', 'SM'=> 'Samsung'];
-
-    return [
-        'model'=> $model,
-        'brand'=> $brands[$brand] ?? 'Samsung',
-        'android_version'=> $android,
-        'browser'=> $browser[1],
-        'browser_version'=> $browser[2],
-    ];
 }
 
 /**
