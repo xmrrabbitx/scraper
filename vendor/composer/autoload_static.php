@@ -8,34 +8,23 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '1a61293ffb35bbf5a859aee8b172fd23' => __DIR__ . '/..' . '/sqonk/phext-core/src/global_functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '88254829cb0eed057c30eaabb6d8edc4' => __DIR__ . '/..' . '/amphp/amp/src/functions.php',
         '429ae5f14a13a9076791c19422e10996' => __DIR__ . '/..' . '/amphp/amp/src/Future/functions.php',
         'c8601a4144b50a7b548da082c89c4dc1' => __DIR__ . '/..' . '/amphp/amp/src/Internal/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '7de56c435892f5b402ee752aaef5fa35' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/BulkPlot.class.php',
-        'bfea83a16a06a45b71e5b526f6fa9092' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/JPGraphUtils.php',
-        'c90bb4538c4295502438f51bd429232b' => __DIR__ . '/..' . '/sqonk/phext-plotlib/src/Region.class.php',
-        '742beb564496f2fca98d9aa448d75502' => __DIR__ . '/../..' . '/src/core/utilities.php',
+        '425048888da80f37d025f510881c0ce1' => __DIR__ . '/../..' . '/src/core/utilities.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        's' => 
-        array (
-            'sqonk\\phext\\core\\' => 17,
-        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
         ),
-        'S' => 
-        array (
-            'Scraper\\Trader\\' => 15,
-        ),
         'R' => 
         array (
             'Revolt\\' => 7,
+            'Rabbit\\Scraper\\' => 15,
         ),
         'P' => 
         array (
@@ -75,21 +64,17 @@ class ComposerStaticInitf1cb332d6c77bb7b32b017d3a4a4edd3
     );
 
     public static $prefixDirsPsr4 = array (
-        'sqonk\\phext\\core\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sqonk/phext-core/src',
-        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
-        'Scraper\\Trader\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
         'Revolt\\' => 
         array (
             0 => __DIR__ . '/..' . '/revolt/event-loop/src',
+        ),
+        'Rabbit\\Scraper\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (

@@ -7,14 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '7b11c4dc42b3b3023073cb14e519683c' => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php',
-    '1a61293ffb35bbf5a859aee8b172fd23' => $vendorDir . '/sqonk/phext-core/src/global_functions.php',
     '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     '88254829cb0eed057c30eaabb6d8edc4' => $vendorDir . '/amphp/amp/src/functions.php',
     '429ae5f14a13a9076791c19422e10996' => $vendorDir . '/amphp/amp/src/Future/functions.php',
     'c8601a4144b50a7b548da082c89c4dc1' => $vendorDir . '/amphp/amp/src/Internal/functions.php',
     '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
-    '7de56c435892f5b402ee752aaef5fa35' => $vendorDir . '/sqonk/phext-plotlib/src/BulkPlot.class.php',
-    'bfea83a16a06a45b71e5b526f6fa9092' => $vendorDir . '/sqonk/phext-plotlib/src/JPGraphUtils.php',
-    'c90bb4538c4295502438f51bd429232b' => $vendorDir . '/sqonk/phext-plotlib/src/Region.class.php',
-    '742beb564496f2fca98d9aa448d75502' => $baseDir . '/src/core/utilities.php',
+    '425048888da80f37d025f510881c0ce1' => $baseDir . '/src/core/utilities.php',
 );

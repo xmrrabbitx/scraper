@@ -1,6 +1,6 @@
 <?php
 
-namespace Scraper\Trader\core;
+namespace Rabbit\Scraper\core;
 
 use DateTime;
 use IntlDateFormatter;

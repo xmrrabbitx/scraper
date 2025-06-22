@@ -1,8 +1,8 @@
 {
-    "name": "scraper/trader",
+    "name": "rabbit/scraper",
     "autoload": {
         "psr-4": {
-            "Scraper\\Trader\\": "src/"
+            "Rabbit\\Scraper\\": "src/"
         },
         "files": ["src/core/utilities.php"]
     },
@@ -17,14 +17,10 @@
       "ext-json": "*",
       "phpoffice/phpspreadsheet": "^4.1",
       "ext-intl": "*",
-        "sqonk/phext-plotlib": "^1.1",
-        "macocci7/php-scatterplot": "^1.2",
-        "amphp/amp": "^3.1",
-        "ext-pcntl": "*"
+      "macocci7/php-scatterplot": "^1.2",
+      "amphp/amp": "^3.1"
     },
     "config": {
-      "platform":{
-        "ext-imagick": "3.4.4"
-      }
+
     }
 }

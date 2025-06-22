@@ -1,6 +1,6 @@
 <?php
 
-namespace Scraper\Trader\core\utilities;
+namespace Rabbit\Scraper\core\utilities;
 
 /**
  * Generates Iranian timestamp - Tehran, GMT+3:30

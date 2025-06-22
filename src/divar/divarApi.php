@@ -1,15 +1,18 @@
 <?php
 
-namespace Scraper\Trader\divar;
+namespace Rabbit\Scraper\divar;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Scraper\Trader\core\apiRequest;
-use Scraper\Trader\core\General;
-use Scraper\Trader\exceptions\SiteException;
-use function Scraper\Trader\core\utilities\currentDate;
-use function Scraper\Trader\core\utilities\gregorian_to_jalali;
-use function Scraper\Trader\core\utilities\random_user_agent;
+use Rabbit\Scraper\core\apiRequest;
+use Rabbit\Scraper\core\General;
+use Rabbit\Scraper\exceptions\SiteException;
+use function Rabbit\Scraper\core\utilities\currentDate;
+use function Rabbit\Scraper\core\utilities\gregorian_to_jalali;
+use function Rabbit\Scraper\core\utilities\random_user_agent;
 
+/**
+ * a class to retrive Divar data
+ */
 class divarApi extends apiRequest
 {
     protected array $session;
@@ -100,7 +103,7 @@ class divarApi extends apiRequest
             }
 
         }catch (\Exception $error){
-            //var_dump($error);
+
         }
 
     }
@@ -171,7 +174,7 @@ class divarApi extends apiRequest
             }
 
         }catch (\Exception $error){
-            //var_dump($error);
+
         }
     }
 
@@ -181,10 +184,6 @@ class divarApi extends apiRequest
      */
     public function parseExport($filterPrice, $categoryName,  $rsp):bool
     {
-        // check if day is ended
-        //$cdate = explode("-",currentDate());
-        //$currentDate = gregorian_to_jalali($cdate[0],$cdate[1], $cdate[2]);
-        //$currentDate = $currentDate[0] . "/" . $currentDate[1] . "/" . $currentDate[2];
 
         $statusList = null;
 

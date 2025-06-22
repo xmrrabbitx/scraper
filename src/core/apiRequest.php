@@ -1,6 +1,6 @@
 <?php
 
-namespace Scraper\Trader\core;
+namespace Rabbit\Scraper\core;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Promise;
