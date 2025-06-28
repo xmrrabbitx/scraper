@@ -19,7 +19,7 @@ class divarApi extends apiRequest
 
     const SEARCH_CATEGORIES = "https://api.divar.ir/v8/postlist/w/search";
 
-    const FILE_PATH = "../xls/%s";
+    const FILE_PATH = "./xls/%s";
 
     const SCRIPT_NAME = "Divar/";
 

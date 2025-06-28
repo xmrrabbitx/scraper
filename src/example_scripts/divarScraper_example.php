@@ -2,7 +2,7 @@
 /**
  * example usage of Divar data scraping
  */
-require '../../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use Rabbit\Scraper\divar\divarApi;
 

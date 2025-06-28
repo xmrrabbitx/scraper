@@ -1,5 +1,6 @@
 {
     "name": "rabbit/scraper",
+    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "Rabbit\\Scraper\\": "src/"
@@ -15,12 +16,6 @@
     "require": {
       "guzzlehttp/guzzle": "^7.9",
       "ext-json": "*",
-      "phpoffice/phpspreadsheet": "^4.1",
-      "ext-intl": "*",
-      "macocci7/php-scatterplot": "^1.2",
-      "amphp/amp": "^3.1"
-    },
-    "config": {
-
+      "phpoffice/phpspreadsheet": "^4.1"
     }
 }

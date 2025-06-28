@@ -2,7 +2,7 @@
 /**
  * example usage of digikala supermarket data scraping
  */
-require '../../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use Rabbit\Scraper\digikala\supermarket\spDigikalaApi;
 
