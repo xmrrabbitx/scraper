@@ -4,7 +4,7 @@
  */
 require 'vendor/autoload.php';
 
-use Hopper\Scraper\digikala\supermarket\spDigikalaApi;
+use Rabbyte\Scraper\digikala\supermarket\spDigikalaApi;
 
 $categories = [
     'oil',

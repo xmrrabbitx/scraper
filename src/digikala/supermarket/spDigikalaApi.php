@@ -1,10 +1,10 @@
 <?php
 
-namespace Hopper\Scraper\digikala\supermarket;
+namespace Rabbyte\Scraper\digikala\supermarket;
 
-use Hopper\Scraper\core\apiRequest;
-use Hopper\Scraper\exceptions\SiteException;
-use function Hopper\Scraper\core\utilities\random_user_agent;
+use Rabbyte\Scraper\core\apiRequest;
+use Rabbyte\Scraper\exceptions\SiteException;
+use function Rabbyte\Scraper\core\utilities\random_user_agent;
 
 /**
  * a class to retrive Digikala supermarket data

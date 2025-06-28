@@ -1,6 +1,6 @@
 <?php
 
-namespace Hopper\Scraper\core;
+namespace Rabbyte\Scraper\core;
 
 use DateTime;
 use IntlDateFormatter;

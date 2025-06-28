@@ -4,7 +4,7 @@
  */
 require 'vendor/autoload.php';
 
-use Hopper\Scraper\divar\divarApi;
+use Rabbyte\Scraper\divar\divarApi;
 
 $categories = [
     'stationery',

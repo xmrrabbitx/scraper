@@ -1,6 +1,6 @@
 <?php
 
-namespace Hopper\Scraper\core\utilities;
+namespace Rabbyte\Scraper\core\utilities;
 
 /**
  * Generates Iranian timestamp - Tehran, GMT+3:30
