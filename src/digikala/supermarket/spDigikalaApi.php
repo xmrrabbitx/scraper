@@ -1,10 +1,10 @@
 <?php
 
-namespace Rabbit\Scraper\digikala\supermarket;
+namespace Hopper\Scraper\digikala\supermarket;
 
-use Rabbit\Scraper\core\apiRequest;
-use Rabbit\Scraper\exceptions\SiteException;
-use function Rabbit\Scraper\core\utilities\random_user_agent;
+use Hopper\Scraper\core\apiRequest;
+use Hopper\Scraper\exceptions\SiteException;
+use function Hopper\Scraper\core\utilities\random_user_agent;
 
 /**
  * a class to retrive Digikala supermarket data

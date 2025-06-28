@@ -1,9 +1,9 @@
 {
-    "name": "rabbit/scraper",
+    "name": "hopper/scraper",
     "version": "1.0.0",
     "autoload": {
         "psr-4": {
-            "Rabbit\\Scraper\\": "src/"
+            "Hopper\\Scraper\\": "src/"
         },
         "files": ["src/core/utilities.php"]
     },

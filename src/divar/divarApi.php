@@ -1,14 +1,14 @@
 <?php
 
-namespace Rabbit\Scraper\divar;
+namespace Hopper\Scraper\divar;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Rabbit\Scraper\core\apiRequest;
-use Rabbit\Scraper\core\General;
-use Rabbit\Scraper\exceptions\SiteException;
-use function Rabbit\Scraper\core\utilities\currentDate;
-use function Rabbit\Scraper\core\utilities\gregorian_to_jalali;
-use function Rabbit\Scraper\core\utilities\random_user_agent;
+use Hopper\Scraper\core\apiRequest;
+use Hopper\Scraper\core\General;
+use Hopper\Scraper\exceptions\SiteException;
+use function Hopper\Scraper\core\utilities\currentDate;
+use function Hopper\Scraper\core\utilities\gregorian_to_jalali;
+use function Hopper\Scraper\core\utilities\random_user_agent;
 
 /**
  * a class to retrive Divar data
