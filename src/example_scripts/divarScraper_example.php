@@ -56,5 +56,4 @@ function scrape($categories, $layerPage, $filterPrice)
     }
 }
 
-
 scrape($categories, 0, 10000000);

@@ -32,7 +32,9 @@ foreach ($results as $categoryName => $response) {
     if ($response['state'] === 'fulfilled') {
         $rsp = (string)$response['value']->getBody();
         $json = json_decode($rsp);
-        var_dump($json->data->products[0]->title_fa);
+
+        echo $json->data;
+
     }else {
         echo $categoryName . ": Failed - " . $response['reason'];
     }
