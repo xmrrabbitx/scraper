@@ -1,5 +1,6 @@
 {
     "name": "rabbyte/scraper",
+    "description":"scrape data on iranian e-commerce like Torob, Digikala and Divar",
     "autoload": {
         "psr-4": {
             "Rabbyte\\Scraper\\": "src/"
