@@ -4,7 +4,7 @@
  */
 require 'vendor/autoload.php';
 
-use Rabbyte\Scraper\torob\torob;
+use Rabbyte\Scraper\torob\torobApi;
 
 $categories = [
     'mobile'
@@ -21,17 +21,17 @@ $sort = [
     '-date' // sort based on 'جدیدترین'
 ];
 
-$digikala = new torob('127.0.0.1:8080');
+$torob = new torobApi('127.0.0.1:8080');
 $promises = [];
 for ($i=0;$i<count($brands); $i++) {
 
-    $asyncCategory = $digikala->asyncStruct($categories[0], $brands[$i], $sort[$i],  2);
+    $asyncCategory = $torob->asyncStruct($categories[0], $brands[$i], $sort[$i],  2);
 
     $promises[$brands[$i]] = $asyncCategory;
 
 }
 
-$results = $digikala->asyncRequest($promises);
+$results = $torob->asyncRequest($promises);
 foreach ($results as $categoryName => $response) {
     if ($response['state'] === 'fulfilled') {
         $rsp = (string)$response['value']->getBody();
