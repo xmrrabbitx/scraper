@@ -18,7 +18,7 @@ $categories = [
     'types-paste'
 ];
 
-$digikala = new spDigikalaApi('127.0.0.1:8082');
+$digikala = new spDigikalaApi('127.0.0.1:8080');
 $promises = [];
 foreach ($categories as $category) {
     $asyncCategory = $digikala->asyncStruct($category, 1);

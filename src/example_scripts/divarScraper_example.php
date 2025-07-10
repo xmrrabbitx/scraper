@@ -17,7 +17,7 @@ $categories = [
 function scrape($categories, $layerPage, $filterPrice)
 {
     if(!empty($categories)) {
-        $divar = new divarApi();
+        $divar = new divarApi('127.0.0.1:8080');
         $promises = [];
         foreach ($categories as $category) {
             $asyncCategory = $divar->asyncStruct($category, $layerPage);
