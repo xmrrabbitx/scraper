@@ -1,29 +1,43 @@
 <?php
 
-namespace Rabbyte\Scraper\digikala\supermarket;
+namespace Rabbyte\Scraper\torob;
 
 use Rabbyte\Scraper\core\apiRequest;
 use Rabbyte\Scraper\exceptions\SiteException;
 use function Rabbyte\Scraper\core\utilities\random_user_agent;
 
 /**
- * a class to retrive Digikala supermarket data
+ * a class to retrive Torob data
  */
-class spDigikalaApi extends apiRequest
+class torob extends apiRequest
 {
     protected array $session;
 
-    const SEARCH_CATEGORIES = "https://api.digikala.com/fresh/v1/categories/%s/search/?_whid=1&sort=1&seo_url=/category-oil/?sort=1&page=%s";
-
-    const FILE_PATH = "../xls/%s";
-
-    const SCRIPT_NAME = "Digikala/";
+    const SEARCH_CATEGORIES = "https://api.torob.com/v4/base-product/search/?page=%s&sort=%s&size=24&category=%s&category_name=%s&brand=%s&brand_name=%s";
 
     protected $defaultHeaders = [
-        'access-control-allow-origin'=> 'https://www.digikala.com',
-        'Content-Type'=> 'application/json',
-        'Accept'=> 'application/json, text/plain, */*',
+        'access-control-expose-headers'=>'AMP-Access-Control-Allow-Source-Origin',
+        'access-control-allow-origin'=> 'https://torob.com',
+        'Content-Type'=> 'application/json; charset=utf-8',
+        'Accept'=> '*/*',
         'Accept-Language'=> 'en,fa;q=0.9,en-US;q=0.8',
+    ];
+
+    protected $categories = [
+        'mobile'=>[
+            'config'=>['94','گوشی-موبایل-mobile'],
+            'brands'=>[
+                'apple'=>['14','apple-اپل'],
+                'xiaomi'=>['102','xiaomi-شیایومی'],
+                'samsung'=>['5','samsung-سامسونگ'],
+            ]
+        ]
+    ];
+
+    protected $sort = [
+        'price',
+        '-price',
+        '-date'
     ];
 
     public function __construct(string $proxy='')
@@ -38,10 +52,18 @@ class spDigikalaApi extends apiRequest
      * @param int $filterPrice filter prices
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function asyncStruct(string $category, int $layerPage)
+    public function asyncStruct(string $category, string $brand, string $sort, int $layerPage, )
     {
         try {
-            $url = sprintf(self::SEARCH_CATEGORIES, $category, $layerPage);
+            $url = sprintf(self::SEARCH_CATEGORIES,
+                $layerPage,
+                $sort,
+                $this->categories[$category]['config'][0],
+                $this->categories[$category]['config'][1],
+                $this->categories[$category]['brands'][$brand][0],
+                $this->categories[$category]['brands'][$brand][1],
+
+            );
             return $this->request('GET', $url);
 
         }catch (\Exception $error){

@@ -15,11 +15,6 @@ class spDigikalaApi extends apiRequest
 
     const SEARCH_CATEGORIES = "https://api.digikala.com/fresh/v1/categories/%s/search/?_whid=1&sort=1&seo_url=/category-oil/?sort=1&page=%s";
 
-
-    const FILE_PATH = "../xls/%s";
-
-    const SCRIPT_NAME = "Digikala/";
-
     protected $defaultHeaders = [
         'access-control-allow-origin'=> 'https://www.digikala.com',
         'Content-Type'=> 'application/json',
