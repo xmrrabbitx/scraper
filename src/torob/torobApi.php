@@ -9,7 +9,7 @@ use function Rabbyte\Scraper\core\utilities\random_user_agent;
 /**
  * a class to retrive Torob data
  */
-class torob extends apiRequest
+class torobApi extends apiRequest
 {
     protected array $session;
 
