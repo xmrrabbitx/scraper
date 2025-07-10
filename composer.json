@@ -1,6 +1,5 @@
 {
     "name": "rabbyte/scraper",
-    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "Rabbyte\\Scraper\\": "src/"
